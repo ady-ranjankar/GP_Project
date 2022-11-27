@@ -48,7 +48,7 @@ public class CreateEnvironment : MonoBehaviour
     {
         size = 10;
         width = 5.0f;
-        level = 3;
+        level = 1;
 
         List<int[]> unassigned = new List<int[]>();
         List<int[]> unassigned_new = new List<int[]>();

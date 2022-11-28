@@ -23,6 +23,8 @@ public class CreateEnvironment : MonoBehaviour
     private List<int[]> pos_C;
     private List<int[]> pos_D;
 
+    private List<int> start = new List<int> {0, 0};
+
     private int function_calls = 0; 
 
     private void Shuffle<T>(ref List<T> list)
@@ -48,7 +50,7 @@ public class CreateEnvironment : MonoBehaviour
     {
         size = 10;
         width = 5.0f;
-        level = 1;
+        level = 5;
 
         List<int[]> unassigned = new List<int[]>();
         List<int[]> unassigned_new = new List<int[]>();
@@ -113,6 +115,9 @@ public class CreateEnvironment : MonoBehaviour
             Debug.Log(n);
             UnityEngine.Object.Destroy(tile);
         }
+
+        CheckIfPathExisits(ref grid, start[0], start[1]);
+
 
         for (i = 0; i < size; i++)
         {
@@ -243,6 +248,438 @@ public class CreateEnvironment : MonoBehaviour
         
 
         return areWeConsistent;
+    }
+
+    class Tile {
+        public int row;
+        public int col;
+        public int gscore;
+        public int fscore;
+        public int empty;
+        public List<Tile> route;
+
+        public Tile (int row, int col) {
+            this.row = row;
+            this.col = col;
+            this.empty = 0;
+            this.gscore = 128;
+            this.fscore = 0;
+            this.route = new List<Tile>();
+        }
+    }
+
+    int heuristic (Tile x, Tile goal) {
+        return Mathf.Abs(goal.row - x.row) + Mathf.Abs(goal.col - x.col);
+    }
+
+    void AddNeighbor(ref List<Tile> tile_list, ref List<Tile> visited, Tile cur_tile, Tile goal, int row, int col, int is_empty = 0)
+    {    
+        foreach (Tile i in visited)
+        {
+            if (i.row == row && i.col == col)
+                return;
+
+        }
+        Tile neighbor = new Tile(row, col);
+        if(is_empty == 0)
+        {
+            int gscore = cur_tile.gscore + 1;
+            if (gscore < neighbor.gscore)
+            {
+                neighbor.gscore = gscore;
+                neighbor.fscore = neighbor.gscore + heuristic(neighbor, goal);
+                neighbor.route.AddRange(cur_tile.route);
+                neighbor.route.Add(cur_tile);
+                tile_list.Add(neighbor);
+            }
+            return;
+        }
+
+        int empty = cur_tile.empty;
+        if (is_empty == 2)
+            empty++;
+        neighbor.empty = empty;
+        neighbor.route.AddRange(cur_tile.route);
+        neighbor.route.Add(cur_tile);
+        tile_list.Add(neighbor);
+ 
+    }
+
+    bool isPathPresent(ref List<TileType> [,] grid, Tile source, Tile goal)
+    {
+        List<Tile> tile_list = new List<Tile>();
+        List<Tile> visited = new List<Tile>();
+        source.gscore = 0;
+        source.fscore = source.gscore + heuristic(source, goal);
+        tile_list.Add(source);
+        Tile cur_tile;
+        int row;
+        int col;
+        int n = 0;
+        while(tile_list.Count > 0){
+            n++;
+            cur_tile = tile_list[0];
+            
+            Debug.Log(tile_list.Count);
+            Debug.Log(" ");
+            tile_list.RemoveAt(0);
+            if (cur_tile.row == goal.row && cur_tile.col == goal.col) {
+                return true;
+            }
+
+            visited.Add(cur_tile);
+
+            //Sides
+            row = cur_tile.row + 1;
+            col = cur_tile.col;
+            if(row < size || (row == goal.row && col == goal.col))
+            {
+                if (grid[row, col].Count == 1)
+                    AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col);
+            }
+
+            row = cur_tile.row - 1;
+            col = cur_tile.col;
+            if(row >= 0 || (row == goal.row && col == goal.col))
+            {
+                if (grid[row, col].Count == 1)
+                    AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col);
+            }
+
+            row = cur_tile.row;
+            col = cur_tile.col + 1;
+            if(col < size  || (row == goal.row && col == goal.col))
+            {
+                if (grid[row, col].Count == 1)
+                    AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col);
+            }
+
+            row = cur_tile.row;
+            col = cur_tile.col - 1;
+            if(col >= 0 || (row == goal.row && col == goal.col))
+            {
+                if (grid[row, col].Count == 1)
+                    AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col);
+            }
+
+            //Sides with Jump
+            row = cur_tile.row + 2;
+            col = cur_tile.col;
+            if(row < size || (row == goal.row && col == goal.col))
+            {
+                if (grid[row, col].Count == 1)
+                    AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col);
+            }
+
+            row = cur_tile.row - 2;
+            col = cur_tile.col;
+            if(row >= 0 || (row == goal.row && col == goal.col))
+            {
+                if (grid[row, col].Count == 1)
+                    AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col);
+            }
+
+            row = cur_tile.row;
+            col = cur_tile.col + 2;
+            if(col < size  || (row == goal.row && col == goal.col))
+            {
+                if (grid[row, col].Count == 1)
+                    AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col);
+            }
+
+            row = cur_tile.row;
+            col = cur_tile.col - 2;
+            if(col >= 0 || (row == goal.row && col == goal.col))
+            {
+                if (grid[row, col].Count == 1)
+                    AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col);
+            }
+
+            //Diagonals
+            row = cur_tile.row - 1;
+            col = cur_tile.col - 1;
+            if((col >= 0 && row >= 0)|| (row == goal.row && col == goal.col))
+            {
+                if (grid[row, col].Count == 1)
+                    AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col);
+            }
+
+            row = cur_tile.row - 1;
+            col = cur_tile.col + 1;
+            if((row >= 0 && col < size)|| (row == goal.row && col == goal.col))
+            {
+                if (grid[row, col].Count == 1)
+                    AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col);
+            }
+
+            row = cur_tile.row + 1;
+            col = cur_tile.col - 1;
+            if((col >= 0 && row < size)|| (row == goal.row && col == goal.col))
+            {
+                if (grid[row, col].Count == 1)
+                    AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col);
+            }
+
+            row = cur_tile.row + 1;
+            col = cur_tile.col + 1;
+            if((row < size && col < size)|| (row == goal.row && col == goal.col))
+            {
+                if (grid[row, col].Count == 1)
+                    AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col);
+            }
+
+
+
+            tile_list.Sort(delegate (Tile a, Tile b)
+            {
+                return (a.fscore).CompareTo(b.fscore);
+            });
+
+            
+
+
+        }
+        return false;
+
+
+    }
+
+
+    void Create_Path(ref List<TileType> [,] grid,  Tile source, Tile goal)
+    {
+        List<Tile> tile_list = new List<Tile>();
+        List<Tile> visited = new List<Tile>();
+        
+        source.gscore = 0;
+        source.empty = 0;
+        tile_list.Add(source);
+        Tile cur_tile;
+        int row;
+        int col;
+        int n = 0;
+        int is_empty;
+
+        while(tile_list.Count > 0)
+        {
+            n++;
+            cur_tile = tile_list[0];
+            
+            Debug.Log(tile_list.Count);
+            Debug.Log(" ");
+            tile_list.RemoveAt(0);
+            if (cur_tile.row == goal.row && cur_tile.col == goal.col) 
+            {
+                foreach (Tile x in cur_tile.route) 
+                {
+                    if (grid[x.row, x.col].Count > 1) 
+                    {
+                        Debug.Log("Adding tile at "+ x.row + ", " + x.col);
+                        GameObject tile = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                        tile.name = "TILE" + (x.row*size + x.col).ToString();
+                        tile.transform.localScale = new Vector3(5.0f, 0.2f, 5.0f);
+                        tile.transform.position = new Vector3(x.col*5 - (float)(size * Math.Floor(width/2)), -2, x.row*width - 2.0f);
+                        tile.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off ;
+
+                        grid[x.row, x.col] =  new List<TileType> {grid[x.row, x.col][0]};
+                        if(grid[x.row, x.col][0] == TileType.A)
+                            tile.GetComponent<Renderer>().material.color = Color.red;
+
+                        else if(grid[x.row, x.col][0] == TileType.B)
+                            tile.GetComponent<Renderer>().material.color = Color.blue;
+
+                        else if(grid[x.row, x.col][0] == TileType.C)
+                            tile.GetComponent<Renderer>().material.color = Color.yellow;
+
+                        else if(grid[x.row, x.col][0] == TileType.D)
+                            tile.GetComponent<Renderer>().material.color = Color.green;
+                    }
+                }
+                return;
+            }
+
+            visited.Add(cur_tile);
+
+            row = cur_tile.row + 1;
+            col = cur_tile.col;
+            if(row < size || (row == goal.row && col == goal.col))
+            {
+                if (grid[row, col].Count > 1)
+                    is_empty = 2;
+                else
+                    is_empty = 1;
+                AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col, is_empty);
+            }
+
+            row = cur_tile.row - 1;
+            col = cur_tile.col;
+            if(row >= 0 || (row == goal.row && col == goal.col))
+            {
+                 
+                if (grid[row, col].Count > 1)
+                    is_empty = 2;
+                else
+                    is_empty = 1;
+                AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col, is_empty);
+            }
+            
+
+            row = cur_tile.row;
+            col = cur_tile.col + 1;
+            if(col < size || (row == goal.row && col == goal.col))
+            {
+                 
+                if (grid[row, col].Count > 1)
+                    is_empty = 2;
+                else
+                    is_empty = 1;
+                AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col, is_empty);
+            }
+            
+
+            row = cur_tile.row;
+            col = cur_tile.col - 1;
+            if(col >= 0 || (row == goal.row && col == goal.col))
+            {
+                if (grid[row, col].Count > 1)
+                    is_empty = 2;
+                else
+                    is_empty = 1;
+                AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col, is_empty);
+            }
+
+            row = cur_tile.row - 1;
+            col = cur_tile.col - 1;
+            if((col >= 0 && row >= 0)|| (row == goal.row && col == goal.col))
+            {
+                if (grid[row, col].Count > 1)
+                    is_empty = 2;
+                else
+                    is_empty = 1;
+                AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col, is_empty);
+            }
+
+            row = cur_tile.row - 1;
+            col = cur_tile.col + 1;
+            if((row >= 0 && col < size)|| (row == goal.row && col == goal.col))
+            {
+                if (grid[row, col].Count > 1)
+                    is_empty = 2;
+                else
+                    is_empty = 1;
+                AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col, is_empty);
+            }
+
+            row = cur_tile.row + 1;
+            col = cur_tile.col - 1;
+            if((col >= 0 && row < size)|| (row == goal.row && col == goal.col))
+            {
+                if (grid[row, col].Count > 1)
+                    is_empty = 2;
+                else
+                    is_empty = 1;
+                AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col, is_empty);
+            }
+
+            row = cur_tile.row + 1;
+            col = cur_tile.col + 1;
+            if((row < size && col < size)|| (row == goal.row && col == goal.col))
+            {
+                if (grid[row, col].Count > 1)
+                    is_empty = 2;
+                else
+                    is_empty = 1;
+                AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col, is_empty);
+            }
+
+
+
+
+            tile_list.Sort(delegate (Tile a, Tile b)
+            {
+                return (a.empty).CompareTo(b.empty);
+            });
+
+        }
+
+
+    }
+
+
+    
+
+
+
+    void CheckIfPathExisits(ref List<TileType> [,] grid, int x, int y)
+    {
+        
+        Tile source = new Tile(x, y);
+        Tile goal;
+        
+        int i;
+        int h = 0;
+        for (i = 0; i< pos_A.Count; i++)
+        {   
+            h = 0;
+            goal = new Tile(pos_A[i][0], pos_A[i][1]);
+            if (isPathPresent(ref grid, source, goal)){
+                h = 1;
+                break;
+            }
+        }
+        if (h == 0)
+        {
+            goal = new Tile(pos_A[0][0], pos_A[0][1]);
+            Create_Path(ref grid, source, goal);
+        }
+
+
+
+         for (i = 0; i< pos_B.Count; i++)
+        {   
+            h = 0;
+            goal = new Tile(pos_B[i][0], pos_B[i][1]);
+            if (isPathPresent(ref grid, source, goal)){
+                h = 1;
+                break;
+            }
+        }
+        if (h == 0)
+        {
+            goal = new Tile(pos_B[0][0], pos_B[0][1]);
+            Create_Path(ref grid, source, goal);
+        }
+
+
+         for (i = 0; i< pos_C.Count; i++)
+        {   
+            h = 0;
+            goal = new Tile(pos_C[i][0], pos_C[i][1]);
+            if (isPathPresent(ref grid, source, goal)){
+                h = 1;
+                break;
+            }
+        }
+        if (h == 0)
+        {
+            goal = new Tile(pos_C[0][0], pos_C[0][1]);
+            Create_Path(ref grid, source, goal);
+        }
+
+
+         for (i = 0; i< pos_D.Count; i++)
+        {   
+            h = 0;
+            goal = new Tile(pos_D[i][0], pos_D[i][1]);
+            if (isPathPresent(ref grid, source, goal)){
+                h = 1;
+                break;
+            }
+        }
+        if (h == 0)
+        {
+            goal = new Tile(pos_D[0][0], pos_D[0][1]);
+            Create_Path(ref grid, source, goal);
+        }
     }
 
 

@@ -427,37 +427,40 @@ public class CreateEnvironment : MonoBehaviour
                     AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col);
             }
 
-            //Sides with Jump
-            row = cur_tile.row + 2;
-            col = cur_tile.col;
-            if(row < size || (row == goal.row && col == goal.col))
+            if (player == 1)
             {
-                if (grid[row, col].Count == 1)
-                    AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col);
-            }
+                //Sides with Jump
+                row = cur_tile.row + 2;
+                col = cur_tile.col;
+                if(row < size || (row == goal.row && col == goal.col))
+                {
+                    if (grid[row, col].Count == 1)
+                        AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col);
+                }
 
-            row = cur_tile.row - 2;
-            col = cur_tile.col;
-            if(row >= 0 || (row == goal.row && col == goal.col))
-            {
-                if (grid[row, col].Count == 1)
-                    AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col);
-            }
+                row = cur_tile.row - 2;
+                col = cur_tile.col;
+                if(row >= 0 || (row == goal.row && col == goal.col))
+                {
+                    if (grid[row, col].Count == 1)
+                        AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col);
+                }
 
-            row = cur_tile.row;
-            col = cur_tile.col + 2;
-            if(col < size  || (row == goal.row && col == goal.col))
-            {
-                if (grid[row, col].Count == 1)
-                    AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col);
-            }
+                row = cur_tile.row;
+                col = cur_tile.col + 2;
+                if(col < size  || (row == goal.row && col == goal.col))
+                {
+                    if (grid[row, col].Count == 1)
+                        AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col);
+                }
 
-            row = cur_tile.row;
-            col = cur_tile.col - 2;
-            if(col >= 0 || (row == goal.row && col == goal.col))
-            {
-                if (grid[row, col].Count == 1)
-                    AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col);
+                row = cur_tile.row;
+                col = cur_tile.col - 2;
+                if(col >= 0 || (row == goal.row && col == goal.col))
+                {
+                    if (grid[row, col].Count == 1)
+                        AddNeighbor(ref tile_list, ref visited, cur_tile, goal, row, col);
+                }
             }
 
             //Diagonals

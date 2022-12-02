@@ -16,8 +16,8 @@ enum TileType
 
 public class CreateEnvironment : MonoBehaviour
 {
-    private float width;
-    private int size;
+    public float width;
+    public int size;
     private List<int[]> pos_A;
     private List<int[]> pos_B;
     private List<int[]> pos_C;
@@ -175,6 +175,12 @@ public class CreateEnvironment : MonoBehaviour
             if (grid[wr, lr].Count == 1 && wr != player_start[0] && lr != player_start[1])
             {
                 opponent_start = new int[] {wr, lr};
+
+                GameObject opp = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                opp.name = "opp";
+                opp.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
+                opp.transform.position = new Vector3(lr*5 - (float)(size * Math.Floor(width/2)), -2, wr*width - 2.0f);
+
                 break;
             }
         }
@@ -186,7 +192,7 @@ public class CreateEnvironment : MonoBehaviour
         
 
         CheckIfPathExisits(ref grid, player_start[0], player_start[1], 1);
-        CheckIfPathExisits(ref grid, opponent_start[0], opponent_start[1], 2);
+        CheckIfPathExisits(ref grid, opponent_start[0], opponent_start[1], 5);
 
         
         for (i = 0; i < size; i++)
@@ -388,6 +394,7 @@ public class CreateEnvironment : MonoBehaviour
             tile_list.RemoveAt(0);
             if (cur_tile.row == goal.row && cur_tile.col == goal.col) 
             {
+                cur_tile.route.Add(cur_tile);
                 assignRoute(cur_tile, player);
                 return true;
             }
@@ -536,7 +543,7 @@ public class CreateEnvironment : MonoBehaviour
             tile_list.RemoveAt(0);
             if (cur_tile.row == goal.row && cur_tile.col == goal.col) 
             {
-                assignRoute(cur_tile, player);
+                
                 foreach (Tile x in cur_tile.route) 
                 {
                     if (grid[x.row, x.col].Count > 1) 
@@ -562,6 +569,8 @@ public class CreateEnvironment : MonoBehaviour
                             tile.GetComponent<Renderer>().material.color = Color.green;
                     }
                 }
+                cur_tile.route.Add(cur_tile);
+                assignRoute(cur_tile, player);
                 return;
             }
 
@@ -689,13 +698,14 @@ public class CreateEnvironment : MonoBehaviour
         if(player == 5)
             opponent_to_A = tile.route;
 
-        if(player == 6)
+        if(player == 10)
             opponent_to_B = tile.route;
 
-        if(player == 7)
+        if(player == 15)
             opponent_to_C = tile.route;
 
-        if(player == 8)
+        if(player == 20)
+            
             opponent_to_D = tile.route;
     }
 

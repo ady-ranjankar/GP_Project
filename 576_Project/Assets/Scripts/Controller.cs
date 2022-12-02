@@ -5,7 +5,7 @@ using UnityEngine;
 public class Controller : MonoBehaviour
 {
 
-    public float timeRemaining = 3.0f;
+    private float timeRemaining = 10.0f;
     public bool timerIsRunning = false;
 
     private int level;
@@ -19,6 +19,8 @@ public class Controller : MonoBehaviour
     {
         level = 1;
         create.begin(level);
+        opponent.get_route(1);
+        opponent.isRoute = true;
         timerIsRunning = true;
     }
 
@@ -38,13 +40,16 @@ public class Controller : MonoBehaviour
                 level ++;
                 //code to choose question and answer
                 answer = 1;
+                opponent.isRoute = false;
+                GameObject opp = GameObject.Find("opp");
+                UnityEngine.Object.Destroy(opp);
                 create.begin(level);
                 opponent.get_route(1);
                 opponent.isRoute = true;
 
                 Debug.Log("Time has run out!");
                 
-                foreach (Tile x in create.player_to_A) 
+                foreach (Tile x in create.opponent_to_A) 
                 {
                     Debug.Log(x.row);
                     Debug.Log(x.col);
@@ -56,7 +61,7 @@ public class Controller : MonoBehaviour
                 
                 //create.destroy();
                 
-                timeRemaining = 3;
+                timeRemaining = 10.0f;
             }
         }
     }

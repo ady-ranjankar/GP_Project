@@ -862,6 +862,7 @@ MonoBehaviour:
   timerIsRunning: 0
   create: {fileID: 1782397496}
   opponent: {fileID: 543441944}
+  claire: {fileID: 0}
 --- !u!4 &1390832020
 Transform:
   m_ObjectHideFlags: 0
@@ -1075,6 +1076,7 @@ MonoBehaviour:
   size: 0
   myPrefab: {fileID: 100002, guid: 595cf544943e29a4d9a7b813e4218a3c, type: 3}
   opp_prefab: {fileID: 1968476592218994, guid: 313ad0ef31f75b84f9f31c0528802fdd, type: 3}
+  player: {fileID: 1850906989}
 --- !u!1001 &1850906988
 PrefabInstance:
   m_ObjectHideFlags: 0

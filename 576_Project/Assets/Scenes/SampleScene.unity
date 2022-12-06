@@ -859,7 +859,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0358918c8b5e18740a3533e26542e57f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeRemaining: 3
   timerIsRunning: 0
   create: {fileID: 1782397496}
   opponent: {fileID: 543441944}
@@ -922,6 +921,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14822653f1325574bb5cf04ba5e9b62c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  width: 0
+  size: 0
+  myPrefab: {fileID: 100002, guid: 595cf544943e29a4d9a7b813e4218a3c, type: 3}
 --- !u!1 &1868854084
 GameObject:
   m_ObjectHideFlags: 0

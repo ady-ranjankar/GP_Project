@@ -18,6 +18,7 @@ public class CreateEnvironment : MonoBehaviour
 {
     public float width;
     public int size;
+    public GameObject myPrefab;
     private List<int[]> pos_A;
     private List<int[]> pos_B;
     private List<int[]> pos_C;
@@ -42,6 +43,19 @@ public class CreateEnvironment : MonoBehaviour
     private int[] opponent_start;
 
     private int function_calls = 0; 
+
+    private void Update() 
+    {
+        float speed = 20.0f;
+
+        String n1 = "clock1";
+        GameObject clock1 = GameObject.Find(n1);
+        clock1.transform.Rotate (speed*Time.deltaTime,speed*Time.deltaTime,speed*Time.deltaTime);
+
+        String n2 = "clock2";
+        GameObject clock2 = GameObject.Find(n2);
+        clock2.transform.Rotate (speed*Time.deltaTime,speed*Time.deltaTime,speed*Time.deltaTime);
+    }
 
     private void Shuffle<T>(ref List<T> list)
     {
@@ -79,8 +93,18 @@ public class CreateEnvironment : MonoBehaviour
                 
                 UnityEngine.Object.Destroy(tile);
                 //Debug.Log("Destroying tile at "+ i + ", " + j);
+
                 
             }
+        
+        String n1 = "clock1";
+        GameObject clock1 = GameObject.Find(n1);
+        UnityEngine.Object.Destroy(clock1);
+
+        String n2 = "clock2";
+        GameObject clock2 = GameObject.Find(n2);
+        UnityEngine.Object.Destroy(clock2);
+                
 
     }
 
@@ -179,9 +203,26 @@ public class CreateEnvironment : MonoBehaviour
                 GameObject opp = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 opp.name = "opp";
                 opp.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
-                opp.transform.position = new Vector3(lr*5 - (float)(size * Math.Floor(width/2)), -2, wr*width - 2.0f);
-
+                opp.transform.position = new Vector3(lr*5 - (float)(size * Math.Floor(width/2)), 10, wr*width - 2.0f);
+                Rigidbody gameObjectsRigidBody = opp.AddComponent<Rigidbody>(); 
+                gameObjectsRigidBody.mass = 5;
                 break;
+            }
+        }
+
+        int time_obj = 1;
+        while (time_obj < 3) // try until a valid position is sampled
+        {
+            wr = UnityEngine.Random.Range(0, size);
+            lr = UnityEngine.Random.Range(0, size);
+
+            if (grid[wr, lr].Count == 1 && wr != player_start[0] && lr != player_start[1])
+            {
+                
+                GameObject clock = Instantiate(myPrefab, new Vector3(lr*5 - (float)(size * Math.Floor(width/2)), 1.5f, wr*width - 2.0f), Quaternion.identity);
+                clock.name = "clock" + time_obj.ToString();
+                clock.transform.eulerAngles = new Vector3(-10f, 200f, 10f);
+                time_obj++;
             }
         }
 

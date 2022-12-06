@@ -11,6 +11,7 @@ public class Opponent : MonoBehaviour
 
     private List<Tile> route = new List<Tile>();
     public bool isRoute;
+    float y = 0.0f;
     int i = 0;
     // Start is called before the first frame update
     public void get_route(int answer)
@@ -53,8 +54,11 @@ public class Opponent : MonoBehaviour
         GameObject opp = GameObject.Find("opp");
 
         Vector3 tile_pos = tile.transform.position;
-        Vector3 cur_pos = opp.transform.position;;
+        
+        Vector3 cur_pos = opp.transform.position;
+        y = cur_pos.y;
         Vector3 direction = tile_pos - cur_pos;
+        direction.y = y;
         direction.Normalize();
         return direction;
 
@@ -83,8 +87,10 @@ public class Opponent : MonoBehaviour
             name = "TILE" + (x.row*create.size + x.col).ToString();
             GameObject tile = GameObject.Find(name);
 
+            Vector3 tile_pos = tile.transform.position;
+            tile_pos.y = y;
             opp.transform.position +=  4.0f * direction * Time.deltaTime;
-            if(Vector3.Distance(opp.transform.position,tile.transform.position) < 0.1f)
+            if(Vector3.Distance(opp.transform.position,tile_pos) < 0.1f)
             {
                 i++;
             } 

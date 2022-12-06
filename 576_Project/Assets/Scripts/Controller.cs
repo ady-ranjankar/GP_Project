@@ -5,7 +5,7 @@ using UnityEngine;
 public class Controller : MonoBehaviour
 {
 
-    private float timeRemaining = 10.0f;
+    private float timeRemaining = 30.0f;
     public bool timerIsRunning = false;
 
     private int level;
@@ -61,7 +61,7 @@ public class Controller : MonoBehaviour
                 
                 //create.destroy();
                 
-                timeRemaining = 10.0f;
+                timeRemaining = 30.0f;
             }
         }
     }

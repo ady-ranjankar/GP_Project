@@ -13,6 +13,8 @@ public class Controller : MonoBehaviour
 
     public Opponent opponent;
 
+    public GameObject claire;
+
     int answer;
     // Start is called before the first frame update
     void Start()
@@ -22,6 +24,7 @@ public class Controller : MonoBehaviour
         opponent.get_route(1);
         opponent.isRoute = true;
         timerIsRunning = true;
+        //claire.SetActive(false);
     }
 
     // Update is called once per frame

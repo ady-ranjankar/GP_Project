@@ -19,6 +19,14 @@ public class CreateEnvironment : MonoBehaviour
     public float width;
     public int size;
     public GameObject myPrefab;
+    public GameObject opp_prefab;
+    
+    
+
+    public GameObject player;
+
+    //public Type claire_script;
+
     private List<int[]> pos_A;
     private List<int[]> pos_B;
     private List<int[]> pos_C;
@@ -187,6 +195,10 @@ public class CreateEnvironment : MonoBehaviour
             if (grid[wr, lr].Count == 1)
             {
                 player_start = new int[] {wr, lr};
+                
+                player.SetActive(true);
+                player.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
+                player.transform.position = new Vector3(lr*5 - (float)(size * Math.Floor(width/2)), -1.9f, wr*width - 2.0f);
                 break;
             }
         }
@@ -200,12 +212,16 @@ public class CreateEnvironment : MonoBehaviour
             {
                 opponent_start = new int[] {wr, lr};
 
-                GameObject opp = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                //GameObject opp = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                GameObject opp = Instantiate(opp_prefab);
                 opp.name = "opp";
                 opp.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
-                opp.transform.position = new Vector3(lr*5 - (float)(size * Math.Floor(width/2)), 10, wr*width - 2.0f);
-                Rigidbody gameObjectsRigidBody = opp.AddComponent<Rigidbody>(); 
-                gameObjectsRigidBody.mass = 5;
+                opp.transform.position = new Vector3(lr*5 - (float)(size * Math.Floor(width/2)), -1.9f, wr*width - 2.0f);
+                //Rigidbody gameObjectsRigidBody = opp.AddComponent<Rigidbody>(); 
+                //gameObjectsRigidBody.mass = 0.1f;
+                //opp.AddComponent<BoxCollider>();
+                //BoxCollider b = opp.GetComponent<Collider>() as BoxCollider;
+                //b.size = new Vector3(1.0f, 0.5f, 1.0f);
                 break;
             }
         }

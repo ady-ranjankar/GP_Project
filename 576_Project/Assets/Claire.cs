@@ -29,6 +29,7 @@ public class Claire : MonoBehaviour {
         num_lives = 5;
         has_won = false;
         is_crouching = false;
+        
     }
 
     // Update is called once per frame

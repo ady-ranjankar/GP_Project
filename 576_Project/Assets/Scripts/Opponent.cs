@@ -58,7 +58,7 @@ public class Opponent : MonoBehaviour
         Vector3 cur_pos = opp.transform.position;
         y = cur_pos.y;
         Vector3 direction = tile_pos - cur_pos;
-        direction.y = y;
+        direction.y = 0.0f;
         direction.Normalize();
         return direction;
 
@@ -90,6 +90,7 @@ public class Opponent : MonoBehaviour
             Vector3 tile_pos = tile.transform.position;
             tile_pos.y = y;
             opp.transform.position +=  4.0f * direction * Time.deltaTime;
+            
             if(Vector3.Distance(opp.transform.position,tile_pos) < 0.1f)
             {
                 i++;

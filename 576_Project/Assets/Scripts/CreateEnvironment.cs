@@ -54,15 +54,28 @@ public class CreateEnvironment : MonoBehaviour
 
     private void Update() 
     {
-        float speed = 20.0f;
 
-        String n1 = "clock1";
-        GameObject clock1 = GameObject.Find(n1);
-        clock1.transform.Rotate (speed*Time.deltaTime,speed*Time.deltaTime,speed*Time.deltaTime);
+        try 
+        {
+            float speed = 20.0f;
 
-        String n2 = "clock2";
-        GameObject clock2 = GameObject.Find(n2);
-        clock2.transform.Rotate (speed*Time.deltaTime,speed*Time.deltaTime,speed*Time.deltaTime);
+            String n1 = "clock1";
+            GameObject clock1 = GameObject.Find(n1);
+            clock1.transform.Rotate (speed*Time.deltaTime,speed*Time.deltaTime,speed*Time.deltaTime);
+
+            String n2 = "clock2";
+            GameObject clock2 = GameObject.Find(n2);
+            clock2.transform.Rotate (speed*Time.deltaTime,speed*Time.deltaTime,speed*Time.deltaTime);
+        }
+
+/* if there are any problems/error the catch will activate what
+is written inside it */
+
+        catch (Exception error)
+        {
+           Debug.Log("Clock not found");
+                
+        }
     }
 
     private void Shuffle<T>(ref List<T> list)
@@ -217,6 +230,7 @@ public class CreateEnvironment : MonoBehaviour
                 opp.name = "opp";
                 opp.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
                 opp.transform.position = new Vector3(lr*5 - (float)(size * Math.Floor(width/2)), -1.9f, wr*width - 2.0f);
+                opp.AddComponent<CharacterController>();
                 //Rigidbody gameObjectsRigidBody = opp.AddComponent<Rigidbody>(); 
                 //gameObjectsRigidBody.mass = 0.1f;
                 //opp.AddComponent<BoxCollider>();

@@ -13,7 +13,10 @@ public class Opponent : MonoBehaviour
     public bool isRoute;
     float y = 0.0f;
     int i = 0;
+    private CharacterController character_controller;
     // Start is called before the first frame update
+
+
     public void get_route(int answer)
     {
         Debug.Log("Route");
@@ -72,10 +75,12 @@ public class Opponent : MonoBehaviour
     void Update()
     {
         String name;
+        
 
         if(isRoute && i < route.Count)
         {
             GameObject opp = GameObject.Find("opp");
+            character_controller = opp.GetComponent<CharacterController>();
             if(i >= route.Count)
             {
                     isRoute = false;
@@ -89,6 +94,9 @@ public class Opponent : MonoBehaviour
 
             Vector3 tile_pos = tile.transform.position;
             tile_pos.y = y;
+            Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
+            opp.transform.rotation = rotation;
+
             opp.transform.position +=  4.0f * direction * Time.deltaTime;
             
             if(Vector3.Distance(opp.transform.position,tile_pos) < 0.1f)

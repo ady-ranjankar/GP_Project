@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,36 +7,57 @@ using UnityEngine.UI;
 public class Claire : MonoBehaviour {
 
     private Animator animation_controller;
+    
     private CharacterController character_controller;
     public Vector3 movement_direction;
     public float walking_velocity;
-    // public Text text;    
+    public float running_velocity;
+        
     public float velocity;
     public int num_lives;
     public bool has_won;
-    public bool is_crouching;
-    // public GameEnds GameEnds;
     
-
+    public float speed = 600.0f;
+    public float turnSpeed = 200.0f;
+    
+    public float timer;
+    float y_axis;
+    
 	// Use this for initialization
 	void Start ()
     {
         animation_controller = GetComponent<Animator>();
         character_controller = GetComponent<CharacterController>();
         movement_direction = new Vector3(0.0f, 0.0f, 0.0f);
-        walking_velocity = 2.5f;
+        walking_velocity = 1.5f;
+        running_velocity = 3.5f;
         velocity = 0.0f;
         num_lives = 5;
         has_won = false;
-        is_crouching = false;
-        
+        timer = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // text.text = "Lives left: " + num_lives;
+        int x = 0;
+        if (x==0){
+            
+            if (num_lives == 0){
+                animation_controller.SetTrigger("death");
+                x = 1;
+            }
+        }
 
+        if (x == 1 && timer < 4){
+            timer += Time.deltaTime;
+        }
+        else if (x == 1){
+           animation_controller.speed = 0f;
+            
+        }
+
+        int check = 0;
         ////////////////////////////////////////////////
         // WRITE CODE HERE:
         // (a) control the animation controller (animator) based on the keyboard input. Adjust also its velocity and moving direction. 
@@ -45,227 +66,200 @@ public class Claire : MonoBehaviour {
         // (d) check if the character reached the target (display the message "you won", freeze the character (idle state), provide an option to restart the game
         // feel free to add more fields in the class        
         ////////////////////////////////////////////////
-        
-        // Winning Logic
-        if (has_won)
-        {
-            velocity = 0.0f;
-            animation_controller.Play("Idle");
-            // GameEnds.Setup("Won!");
 
-        }
+        bool forward = Input.GetKey(KeyCode.UpArrow);
+        bool backward = Input.GetKey(KeyCode.DownArrow);
+        bool crouch = Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl);
+        bool running = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+        bool jump = Input.GetKeyDown(KeyCode.Space);
 
-        // Death Logic
-        if (num_lives == 0 && !has_won)
-        {
-            velocity = 0.0f;
-            animation_controller.SetTrigger("death");
-            // GameEnds.Setup("You Lost!");
+        if(has_won == true || x == 1){
             
-        } 
-
-
-        //Walking Forward Logic
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            if ( Input.GetKey(KeyCode.C) )
-            {   
-                Debug.Log("UP + C");
-                is_crouching = true;
-                animation_controller.SetBool("isWalkingForward", false);
-                animation_controller.SetBool("isRunningForward", false);
-                animation_controller.SetBool("isCrouchingForward", true);
-                
-
-
-            }
-            else if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
-            {
-                Debug.Log("UP + Shift");
-                animation_controller.SetBool("isRunningForward", true);
-                animation_controller.SetBool("isWalkingForward", false);
-                animation_controller.SetBool("isCrouchingForward", false);
-                
-
-            }
-            else 
-            {
-                Debug.Log("UP");
-                animation_controller.SetBool("isCrouchingForward", false);
-                animation_controller.SetBool("isRunningForward", false);
-                animation_controller.SetBool("isWalkingForward", true);
-
-            }
+            animation_controller.SetBool("isWalking", false);
+            animation_controller.SetBool("isCrouch", false);
+            animation_controller.SetBool("isRunning", false);
+            animation_controller.SetBool("isJump", false);
+            velocity = 0.0f;
         }
-        else
-        {
-            animation_controller.SetBool("isWalkingForward", false);
-            animation_controller.SetBool("isCrouchingForward", false);
-            animation_controller.SetBool("isRunningForward", false);
-        }
+        
+        
+         
+        else{ 
+            if (!forward && !backward){
+                velocity = 0.0f;
+            }
+
+            if (forward){
+                animation_controller.SetBool("isWalking", true);
+                if (!running && !jump && !crouch){
+                    if (velocity >= walking_velocity){   
+                        velocity = walking_velocity;
+                    }
+                    else{
+                        velocity += 0.1f;
+                    }
+                }
+            }
+            else{
+                animation_controller.SetBool("isWalking", false);
+            }
+
+
+            if (crouch){
+                animation_controller.SetBool("isCrouch", true);
+            }
+            else{
+                animation_controller.SetBool("isCrouch", false);
+                
+            }
+
+            if (running){
+                animation_controller.SetBool("isRunning", true);
+            }
+            else{
+                animation_controller.SetBool("isRunning", false);
+                
+            }
+        
+            if (jump){
+                animation_controller.SetBool("isJump", true);
+            }
+            else{
+                animation_controller.SetBool("isJump", false);
+                
+            }
+        
+
+
+            if (forward && crouch){
+                
+                if (velocity >= walking_velocity/2.0f){   
+                    velocity = walking_velocity/2.0f;
+                }
+                else{
+                    velocity += 0.05f;
+                }
+            }
+
+
+            if (forward && running){
+                
+                if (velocity >= walking_velocity * 2.0f){   
+                    velocity = walking_velocity * 2.0f;
+                }
+                
+                else{
+                    velocity += 0.2f;
+                }
+            }
+
+            if (jump){
+                
+                velocity = walking_velocity * 3.0f;
+                
+            }
+
+            
+            
+
+            if (backward){
+                animation_controller.SetBool("IsBack", true);
+                if (!crouch){
+                    if (velocity*-1 >= walking_velocity/1.5f){   
+                        velocity = -1* walking_velocity/1.5f;
+                    }
+                    else{
+                        velocity -= 0.05f;
+                    }
+                }
+
+            }
+            else{
+                
+                animation_controller.SetBool("IsBack", false);
+            }
+
+
+            if (backward && crouch){
+                if (velocity*-1 >= walking_velocity/2.0f){   
+                    velocity = -1 * walking_velocity/2.0f;
+                }
+                else{
+                    velocity -= 0.05f;
+                }
+            }
+
+            if(animation_controller.GetCurrentAnimatorStateInfo(0).IsName("JumpOver")){
+                velocity = walking_velocity * 3.0f;
+                y_axis = 0.0f;
+
+            }
+            else
+                y_axis = transform.position.y;
 
 
 
-        // Walking Backward Logic
-        if (Input.GetKey(KeyCode.DownArrow)) 
-        {
-        if (Input.GetKey(KeyCode.C)) 
+
+
+            if (forward && backward){
+                
+                velocity = 0.0f;
+            }
+            
+            
+            
+            
+            float turn = Input.GetAxis("Horizontal");
+            if (!animation_controller.GetCurrentAnimatorStateInfo(0).IsName("JumpOver")){
+                transform.Rotate(0, turn * turnSpeed * Time.deltaTime, 0);
+
+            }
+            
+
+
+
+
+            // you don't need to change the code below (yet, it's better if you understand it). Name your FSM states according to the names below (or change both).
+            // do not delete this. It's useful to shift the capsule (used for collision detection) downwards. 
+            // The capsule is also used from turrets to observe, aim and shoot (see Turret.cs)
+            // If the character is crouching, then she evades detection. 
+            bool is_crouching = false;
+            if ( (animation_controller.GetCurrentAnimatorStateInfo(0).IsName("CrouchForward"))
+            ||  (animation_controller.GetCurrentAnimatorStateInfo(0).IsName("CrouchBackward")) )
             {
-                Debug.Log("DOWN + C");
                 is_crouching = true;
-                animation_controller.SetBool("isWalkingBackward", false);
-                animation_controller.SetBool("isCrouchingBackward", true);
+            }
+
+            if (is_crouching)
+            {
+                GetComponent<CapsuleCollider>().center = new Vector3(GetComponent<CapsuleCollider>().center.x, 0.0f, GetComponent<CapsuleCollider>().center.z);
             }
             else
             {
-                Debug.Log("DOWN");
-                animation_controller.SetBool("isCrouchingBackward", false);
-                animation_controller.SetBool("isWalkingBackward", true);
+                GetComponent<CapsuleCollider>().center = new Vector3(GetComponent<CapsuleCollider>().center.x, 0.9f, GetComponent<CapsuleCollider>().center.z);
             }
-        }
-        else
-        {
-            animation_controller.SetBool("isWalkingBackward", false);
-            animation_controller.SetBool("isCrouchingBackward", false);
-        }
 
-
-        // Jump Over Logic
-        if (Input.GetKey(KeyCode.Space) && animation_controller.GetCurrentAnimatorStateInfo(0).IsName("RunForwards"))
-        {
-            Debug.Log("Jump");
-            animation_controller.SetTrigger("Jump");
-        }
-
-        // Rotation Logic
-        if (Input.GetKey(KeyCode.LeftArrow) && !(has_won || animation_controller.GetCurrentAnimatorStateInfo(0).IsName("JumpOver") || animation_controller.GetCurrentAnimatorStateInfo(0).IsName("Death")))
-        {
-            transform.Rotate(new Vector3(0.0f, -1.0f, 0.0f));
-        }
-        else if (Input.GetKey(KeyCode.RightArrow) && !(has_won || animation_controller.GetCurrentAnimatorStateInfo(0).IsName("JumpOver") || animation_controller.GetCurrentAnimatorStateInfo(0).IsName("Death")))
-        {
-            transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f));
-        }
-
-        // 
-        if (animation_controller.GetBool("death")) 
-        {
-            animation_controller.Play("Death");
-            velocity = 0.0f;
-            if (animation_controller.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.7501)
-            {
-                animation_controller.speed = 0;
-                // GameEnds.Setup("You Lost!");
-                
-
-            }
-           
-
-        }
-
-        else if (animation_controller.GetBool("Jump"))  
-        {
+            // you will use the movement direction and velocity in Turret.cs for deflection shooting 
+            float xdirection = Mathf.Sin(Mathf.Deg2Rad * transform.rotation.eulerAngles.y);
+            float zdirection = Mathf.Cos(Mathf.Deg2Rad * transform.rotation.eulerAngles.y);
+            movement_direction = new Vector3(xdirection,y_axis , zdirection);
             
-            velocity += 0.1f;
-            if (velocity > walking_velocity*3.0f)
-                velocity = walking_velocity*3.0f;
            
-            if (animation_controller.GetCurrentAnimatorStateInfo(0).IsName("JumpOver") && animation_controller.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.92 ){
-                animation_controller.SetBool("Jump", false);
-               
+           
+            
+            // character controller's move function is useful to prevent the character passing through the terrain
+            // (changing transform's position does not make these checks)
+            if (transform.position.y > -1.75f) // if the character starts "climbing" the terrain, drop her down
+            {
+                Vector3 lower_character = movement_direction * velocity * Time.deltaTime;
+                lower_character.y = -100f; // hack to force her down
+                character_controller.Move(lower_character);
             }
-        }
-
-        else if (animation_controller.GetBool("isRunningForward")) 
-        {
-            animation_controller.Play("RunForwards");
-            velocity += 0.2f;
-            if (velocity > walking_velocity*2.0f)
-                velocity = walking_velocity*2.0f;
-
-
-
-        }
-
-        else if (animation_controller.GetBool("isWalkingForward")) 
-        {
-            // animation_controller.Play("WalkingForward");
-            velocity += 0.1f;
-            if (velocity > walking_velocity)
-                velocity = walking_velocity;
-
-        }
-
-        else if (animation_controller.GetBool("isWalkingBackward")) 
-        {
-            // animation_controller.Play("WalkingBackwards");
-            velocity -= 0.1f;
-            if (velocity < -walking_velocity/1.5f)
-                velocity = -walking_velocity/1.5f;
-
-        }
-
-        else if (animation_controller.GetBool("isCrouchingForward")) 
-        {
-            animation_controller.Play("CrouchForwards");
-            velocity += 0.1f;
-            if (velocity > walking_velocity/2.0f)
-                velocity = walking_velocity/2.0f;
-
-        }
-
-        else if (animation_controller.GetBool("isCrouchingBackward")) 
-        {
-            animation_controller.Play("CrouchBackwards");
-            velocity -= 0.1f;
-            if (velocity < -walking_velocity/2.0f)
-                velocity = -walking_velocity/2.0f;
-
-        }
-        else 
-        {
-            animation_controller.Play("Idle");
-            velocity = 0.0f;
-
-        }
-
-
-        // you don't need to change the code below (yet, it's better if you understand it). Name your FSM states according to the names below (or change both).
-        // do not delete this. It's useful to shift the capsule (used for collision detection) downwards. 
-        // The capsule is also used from turrets to observe, aim and shoot (see Turret.cs)
-        // If the character is crouching, then she evades detection. 
-        // bool is_crouching = false;
-        if ( (animation_controller.GetCurrentAnimatorStateInfo(0).IsName("CrouchForwards"))
-         ||  (animation_controller.GetCurrentAnimatorStateInfo(0).IsName("CrouchBackwards")) )
-        {
-            is_crouching = true;
-        }
-
-        if (is_crouching)
-        {
-            GetComponent<CapsuleCollider>().center = new Vector3(GetComponent<CapsuleCollider>().center.x, 0.0f, GetComponent<CapsuleCollider>().center.z);
-        }
-        else
-        {
-            GetComponent<CapsuleCollider>().center = new Vector3(GetComponent<CapsuleCollider>().center.x, 0.9f, GetComponent<CapsuleCollider>().center.z);
-        }
-
-        // you will use the movement direction and velocity in Turret.cs for deflection shooting 
-        float xdirection = Mathf.Sin(Mathf.Deg2Rad * transform.rotation.eulerAngles.y);
-        float zdirection = Mathf.Cos(Mathf.Deg2Rad * transform.rotation.eulerAngles.y);
-        movement_direction = new Vector3(xdirection, 0.0f, zdirection);
-
-        // character controller's move function is useful to prevent the character passing through the terrain
-        // (changing transform's position does not make these checks)
-        if (transform.position.y > 0.0f) // if the character starts "climbing" the terrain, drop her down
-        {
-            Vector3 lower_character = movement_direction * velocity * Time.deltaTime;
-            lower_character.y = -100f; // hack to force her down
-            character_controller.Move(lower_character);
-        }
-        else
-        {
-            character_controller.Move(movement_direction * velocity * Time.deltaTime);
+            else
+            {
+                character_controller.Move(movement_direction * velocity * Time.deltaTime);
+                
+            }
         }
     }                    
 }

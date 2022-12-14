@@ -47,13 +47,32 @@ public class scene5OpponentMove : MonoBehaviour
         direction.Normalize();
         float distanceToTarget = dist.sqrMagnitude;
         Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
-        transform.rotation = rotation;
+        
+
         if(distanceToTarget < destinationReachedTreshold)
             {
                 animation_controller.SetBool("isWalkingForward",false);
                 animation_controller.Play("Idle");
             }
 
+
+        if (transform.position.x > 124.0f){
+            transform.position = new Vector3(123.0f, transform.position.y, transform.position.z);
+        }
+
+        if (transform.position.x < -125.0f){
+            transform.position = new Vector3(-120.0f, transform.position.y, transform.position.z);
+        }
+
+        if (transform.position.z > 124.0f){
+            transform.position = new Vector3(transform.position.z, transform.position.y, 123.0f);
+        }
+
+        if (transform.position.z < -125.0f){
+            transform.position = new Vector3(transform.position.z, transform.position.y, -120.0f);
+        }
+
+        transform.rotation = rotation;
 
 
     }

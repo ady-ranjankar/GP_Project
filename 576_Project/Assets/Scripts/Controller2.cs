@@ -40,7 +40,7 @@ public class Controller2 : MonoBehaviour
             }
             else
             {
-                 SceneManager.LoadScene("Scene3");
+                 SceneManager.LoadScene("Scene1");
                 /*
                 level ++;
                 //code to choose question and answer

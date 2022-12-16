@@ -60,7 +60,7 @@ public class Controller1 : MonoBehaviour
 
     int get_actual_answer(){
         //Probability to get answer
-        return Convert.ToInt16(questiongen.createQuest());
+        return Convert.ToInt16(questiongen.createQuest(level));
     }
 
     public void Scene_Change()

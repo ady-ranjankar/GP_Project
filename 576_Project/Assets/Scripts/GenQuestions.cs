@@ -13,9 +13,25 @@ public class GenQuestions : MonoBehaviour
 
     string answer;
     public TMP_Text screen;
-    public string createQuest()
+    public TMP_Text screen1;
+    public TMP_Text screen2;
+    public TMP_Text screen3;
+    public TMP_Text screen4;
+    public string createQuest(int level)
     {
        
+        string file;
+        if(level == 1)
+            file = "Questions1.csv";
+        else if(level == 1)
+            file = "Questions2.csv";
+        else if(level == 1)
+            file = "Questions3.csv";
+        else if(level == 1)
+            file = "Questions4.csv";
+        else 
+            file = "Questions5.csv";
+        
         StreamReader sr = new StreamReader("Questions.csv");
         List<List<string>> questions = new List<List<string>>();
         string text = "";
@@ -33,10 +49,11 @@ public class GenQuestions : MonoBehaviour
         int rInt = r.Next(0, questions.Count);
 
         
-        for (int j = 0; j<5; j++)
-            text = string.Concat(text, questions[rInt][j],"\n");
-                
-        screen.text = text;
+        screen.text = questions[rInt][0];
+        screen1.text = "A. " + questions[rInt][1];
+        screen2.text = "B. " + questions[rInt][2];
+        screen3.text = "C. " + questions[rInt][3];
+        screen4.text = "D. " + questions[rInt][4];
 
         answer = questions[rInt][5];
         return answer;

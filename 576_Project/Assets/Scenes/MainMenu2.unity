@@ -596,14 +596,14 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 883636643}
-  m_LocalRotation: {x: -0.0031516636, y: -0.0025775328, z: -0.15903106, w: 0.9872652}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -1.4e-14}
   m_LocalScale: {x: 1.3447, y: 1.3447, z: 1.3447}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 722377126}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -0.404, y: -0.234, z: -18.301}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 11.1983, y: -80.2697}
@@ -1503,7 +1503,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Play
+  m_text: Play/RESUME
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 38140e3a08314441eae03069e5502bd1, type: 2}
   m_sharedMaterial: {fileID: -5775000331287921366, guid: 38140e3a08314441eae03069e5502bd1, type: 2}

@@ -64,7 +64,11 @@ public class Controller2 : MonoBehaviour
 
     int get_actual_answer(){
         //Probability to get answer
+<<<<<<< Updated upstream
         return 1;
+=======
+        return Convert.ToInt16(questiongen.createQuest(level));
+>>>>>>> Stashed changes
     }
 
     public void Scene_Change()

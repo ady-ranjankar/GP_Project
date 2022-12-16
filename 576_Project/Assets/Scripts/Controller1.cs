@@ -15,6 +15,8 @@ public class Controller1 : MonoBehaviour
 
     public Opponent opponent;
 
+    public GenQuestions questiongen;
+
     public GameObject claire;
 
     public Behaviour NextLevel;
@@ -43,7 +45,7 @@ public class Controller1 : MonoBehaviour
 
         if(act_answer == 4)
             fin_color = Color.green;
-        opponent.get_route(1);
+        opponent.get_route(act_answer);
         opponent.isRoute = true;
         timerIsRunning = true;
         NextLevel.enabled = false;
@@ -58,11 +60,12 @@ public class Controller1 : MonoBehaviour
 
     int get_actual_answer(){
         //Probability to get answer
-        return 1;
+        return Convert.ToInt16(questiongen.createQuest());
     }
 
     public void Scene_Change()
     {
+        Debug.Log("Scene change");
         SceneManager.LoadScene("Scene2");
     }
 

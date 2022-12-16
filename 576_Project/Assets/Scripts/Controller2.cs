@@ -15,6 +15,8 @@ public class Controller2 : MonoBehaviour
 
     public Opponent opponent;
 
+    public GenQuestions questiongen;
+
     public GameObject claire;
 
     public Behaviour NextLevel;
@@ -43,17 +45,11 @@ public class Controller2 : MonoBehaviour
 
         if(act_answer == 4)
             fin_color = Color.green;
-        opponent.get_route(1);
+        opponent.get_route(act_answer);
         opponent.isRoute = true;
         timerIsRunning = true;
         NextLevel.enabled = false;
         NextLevel_text.enabled = false;
-        GameObject scrolling_image = GameObject.Find("ScrollingImage");
-        scrolling_image.SetActive(false);
-        GameObject background_panel = GameObject.Find("BackgroundPanel");
-        background_panel.SetActive(false);
-        claire.SetActive(false);
-
         //claire.SetActive(false);
     }
 
@@ -64,14 +60,13 @@ public class Controller2 : MonoBehaviour
 
     int get_actual_answer(){
         //Probability to get answer
-        return 1;
+        return Convert.ToInt16(questiongen.createQuest());
     }
 
     public void Scene_Change()
     {
-        
+        Debug.Log("Scene change");
         SceneManager.LoadScene("Scene1");
-
     }
 
     public void onPauseButton(){
@@ -95,16 +90,8 @@ public class Controller2 : MonoBehaviour
             else
             {
                 timerIsRunning = false;
-
-                // GameObject scrolling_image = GameObject.Find("ScrollingImage");
-                // scrolling_image.SetActive(true);
-                // GameObject background_panel = GameObject.Find("BackgroundPanel");
-                // background_panel.SetActive(true);
-                // claire.SetActive(false);
-
                 NextLevel.enabled = true;
                 NextLevel_text.enabled = true;
-
                 String n;
                 GameObject tile;
                 int i;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class Controller1 : MonoBehaviour
 {
 
-    private float timeRemaining = 3.0f;
+    private float timeRemaining = 15.0f;
     public bool timerIsRunning = false;
 
     private int level;
@@ -16,16 +17,53 @@ public class Controller1 : MonoBehaviour
 
     public GameObject claire;
 
+    public Behaviour NextLevel;
+    public Behaviour NextLevel_text;
+
+    int opp_answer;
+    int act_answer;
+
     int answer;
+    Color fin_color;
     // Start is called before the first frame update
     void Start()
     {
         level = 1;
         create.begin(level);
+        opp_answer = get_opponent_answer();
+        act_answer = get_actual_answer();
+        if(act_answer == 1)
+            fin_color = Color.red;
+
+        if(act_answer == 2)
+            fin_color = Color.blue;
+
+        if(act_answer == 3)
+            fin_color = Color.yellow;
+
+        if(act_answer == 4)
+            fin_color = Color.green;
         opponent.get_route(1);
         opponent.isRoute = true;
         timerIsRunning = true;
+        NextLevel.enabled = false;
+        NextLevel_text.enabled = false;
         //claire.SetActive(false);
+    }
+
+    int get_opponent_answer(){
+        //Probability to get answer
+        return 1;
+    }
+
+    int get_actual_answer(){
+        //Probability to get answer
+        return 1;
+    }
+
+    public void Scene_Change()
+    {
+         SceneManager.LoadScene("Scene2");
     }
 
     // Update is called once per frame
@@ -40,7 +78,36 @@ public class Controller1 : MonoBehaviour
             }
             else
             {
-                 SceneManager.LoadScene("Scene2");
+                timerIsRunning = false;
+                NextLevel.enabled = true;
+                NextLevel_text.enabled = true;
+
+                String n;
+                GameObject tile;
+                int i;
+                int j;
+                for (i = 0; i < 10; i++)
+                {
+                    for(j = 0; j < 10; j++)
+                    {
+                        
+                        n = "TILE" + (i * 10 + j).ToString();
+                        tile = GameObject.Find(n);
+                        try
+                        {
+                            if(tile.GetComponent<Renderer>().material.color != fin_color)
+                                UnityEngine.Object.Destroy(tile);
+                        }    
+
+                        catch (Exception error)
+                        {
+                            Debug.Log("Tile not found");
+                                
+                        }
+                        
+                    }
+                }
+
                 /*
                 level ++;
                 //code to choose question and answer

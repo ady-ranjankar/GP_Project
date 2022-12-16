@@ -255,7 +255,8 @@ public class Claire : MonoBehaviour {
                 lower_character.y = -100f; // hack to force her down
                 character_controller.Move(lower_character);
             }
-            else
+            
+            else if(velocity > 0.0f)
             {
                 character_controller.Move(movement_direction * velocity * Time.deltaTime);
                 

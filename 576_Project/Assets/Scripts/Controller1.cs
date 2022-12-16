@@ -63,7 +63,15 @@ public class Controller1 : MonoBehaviour
 
     public void Scene_Change()
     {
-         SceneManager.LoadScene("Scene2");
+        SceneManager.LoadScene("Scene2");
+    }
+
+    public void onPauseButton(){
+        SceneManager.LoadScene("MainMenu2");
+    }
+
+    public void onExitButton(){
+        SceneManager.LoadScene("ExitMenu");
     }
 
     // Update is called once per frame
@@ -81,7 +89,6 @@ public class Controller1 : MonoBehaviour
                 timerIsRunning = false;
                 NextLevel.enabled = true;
                 NextLevel_text.enabled = true;
-
                 String n;
                 GameObject tile;
                 int i;

@@ -48,6 +48,12 @@ public class Controller2 : MonoBehaviour
         timerIsRunning = true;
         NextLevel.enabled = false;
         NextLevel_text.enabled = false;
+        GameObject scrolling_image = GameObject.Find("ScrollingImage");
+        scrolling_image.SetActive(false);
+        GameObject background_panel = GameObject.Find("BackgroundPanel");
+        background_panel.SetActive(false);
+        claire.SetActive(false);
+
         //claire.SetActive(false);
     }
 
@@ -65,6 +71,15 @@ public class Controller2 : MonoBehaviour
     {
         
         SceneManager.LoadScene("Scene1");
+
+    }
+
+    public void onPauseButton(){
+        SceneManager.LoadScene("MainMenu2");
+    }
+
+    public void onExitButton(){
+        SceneManager.LoadScene("ExitMenu");
     }
 
     // Update is called once per frame
@@ -80,6 +95,13 @@ public class Controller2 : MonoBehaviour
             else
             {
                 timerIsRunning = false;
+
+                // GameObject scrolling_image = GameObject.Find("ScrollingImage");
+                // scrolling_image.SetActive(true);
+                // GameObject background_panel = GameObject.Find("BackgroundPanel");
+                // background_panel.SetActive(true);
+                // claire.SetActive(false);
+
                 NextLevel.enabled = true;
                 NextLevel_text.enabled = true;
 

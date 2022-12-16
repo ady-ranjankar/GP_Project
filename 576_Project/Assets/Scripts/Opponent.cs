@@ -14,8 +14,10 @@ public class Opponent : MonoBehaviour
     float y = 0.0f;
     int i = 0;
     private CharacterController character_controller;
-    // Start is called before the first frame update
+    public Animator animation_controller;
+    private bool isWalking = false;
 
+    // Start is called before the first frame update
 
     public void get_route(int answer)
     {
@@ -42,6 +44,17 @@ public class Opponent : MonoBehaviour
                 }
         
         Debug.Log("finish");
+    }
+
+
+    IEnumerator StartAnimation(){
+        GameObject opp = GameObject.Find("opp");
+       
+        animation_controller = opp.GetComponent<Animator>();
+        Debug.Log("Inside Coroutine");
+        isWalking = true;
+        animation_controller.SetBool("isWalkingForward",isWalking);
+        yield return new WaitForSeconds(3f);
     }
 
     Vector3 get_direction()
@@ -81,6 +94,9 @@ public class Opponent : MonoBehaviour
         {
             GameObject opp = GameObject.Find("opp");
             character_controller = opp.GetComponent<CharacterController>();
+            animation_controller = opp.GetComponent<Animator>();
+            // animation_controller.SetBool("isWalkingForward",true);
+            // Debug.Log("State here " + animation_controller.GetBool("isWalkingForward"));
             if(i >= route.Count)
             {
                     isRoute = false;
@@ -99,6 +115,20 @@ public class Opponent : MonoBehaviour
 
             opp.transform.position +=  4.0f * direction * Time.deltaTime;
             
+
+            /////////////////////
+            Vector3  dist = tile_pos - opp.transform.position ;
+            Vector3 moveDist = dist;
+            moveDist.y = 0.0f;
+            moveDist.Normalize();
+            float distanceToTarget = moveDist.sqrMagnitude;
+            Debug.Log("distanceToTarget" + distanceToTarget);
+            if(distanceToTarget > 0.01f )
+                {
+                   isWalking = true;
+                   StartCoroutine(StartAnimation());
+                }
+            ///////////////////
             if(Vector3.Distance(opp.transform.position,tile_pos) < 0.1f)
             {
                 i++;

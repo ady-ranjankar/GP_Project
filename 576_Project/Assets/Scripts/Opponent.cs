@@ -51,11 +51,25 @@ public class Opponent : MonoBehaviour
         GameObject opp = GameObject.Find("opp");
        
         animation_controller = opp.GetComponent<Animator>();
-        Debug.Log("Inside Coroutine");
+        // Debug.Log("Inside Coroutine");
         isWalking = true;
         animation_controller.SetBool("isWalkingForward",isWalking);
         yield return new WaitForSeconds(3f);
     }
+
+    IEnumerator EndAnimation(){
+
+        GameObject opp = GameObject.Find("opp");
+       
+        animation_controller = opp.GetComponent<Animator>();
+        // Debug.Log("Inside Coroutine");
+        isWalking = false;
+        animation_controller.SetBool("isWalkingForward",isWalking);
+        yield return new WaitForSeconds(3f);
+
+    }
+
+
 
     Vector3 get_direction()
     {
@@ -123,11 +137,15 @@ public class Opponent : MonoBehaviour
             moveDist.Normalize();
             float distanceToTarget = moveDist.sqrMagnitude;
             Debug.Log("distanceToTarget" + distanceToTarget);
-            if(distanceToTarget > 0.01f )
+            if(distanceToTarget > 0.1f )
                 {
                    isWalking = true;
                    StartCoroutine(StartAnimation());
                 }
+
+            // if(i < route.Count){
+            //     StartCoroutine(StartAnimation());
+            // }
             ///////////////////
             if(Vector3.Distance(opp.transform.position,tile_pos) < 0.1f)
             {
@@ -144,7 +162,10 @@ public class Opponent : MonoBehaviour
             if(i==route.Count)
                 isRoute = false;
             */
-
+        }
+        else
+        {
+           StartCoroutine(EndAnimation());
         }
         
         

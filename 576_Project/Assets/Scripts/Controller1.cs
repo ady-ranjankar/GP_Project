@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class Controller1 : MonoBehaviour
 {
 
-    private float timeRemaining = 15.0f;
+    
     public bool timerIsRunning = false;
 
     private int level;
@@ -24,7 +24,7 @@ public class Controller1 : MonoBehaviour
 
     int opp_answer;
     int act_answer;
-
+    int g_over = 0;
     int answer;
     Color fin_color;
     // Start is called before the first frame update
@@ -81,13 +81,20 @@ public class Controller1 : MonoBehaviour
     void Update()
     {
         //Debug.Log(timeRemaining);
+        if(claire.transform.position.y < -1.85)
+            g_over = 1;
+
+        if(claire.transform.position.y < -13.85)
+            SceneManager.LoadScene("ExitMenu");
+
+
         if (timerIsRunning)
         {
-            if (timeRemaining > 0)
+            if (create.timeRemaining > 0)
             {
-                timeRemaining -= Time.deltaTime;
+                create.timeRemaining -= Time.deltaTime;
             }
-            else
+            else if(g_over == 0)
             {
                 timerIsRunning = false;
                 NextLevel.enabled = true;

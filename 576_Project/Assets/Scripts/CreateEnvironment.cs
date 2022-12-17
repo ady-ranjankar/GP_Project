@@ -25,6 +25,8 @@ public class CreateEnvironment : MonoBehaviour
 
     public GameObject player;
 
+    public float timeRemaining = 100.0f;
+
     //public Type claire_script;
 
     private List<int[]> pos_A;
@@ -51,6 +53,10 @@ public class CreateEnvironment : MonoBehaviour
     private int[] opponent_start;
 
     private int function_calls = 0; 
+
+    private void Start(){
+        timeRemaining = 100.0f;
+    }
 
     private void Update() 
     {
@@ -211,7 +217,7 @@ is written inside it */
                 
                 player.SetActive(true);
                 player.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
-                player.transform.position = new Vector3(lr*5 - (float)(size * Math.Floor(width/2)), -1.9f, wr*width - 2.0f);
+                player.transform.position = new Vector3(lr*5 - (float)(size * Math.Floor(width/2)), -1.8f, wr*width - 2.0f);
                 break;
             }
         }
@@ -252,6 +258,8 @@ is written inside it */
                 GameObject clock = Instantiate(myPrefab, new Vector3(lr*5 - (float)(size * Math.Floor(width/2)), 1.5f, wr*width - 2.0f), Quaternion.identity);
                 clock.name = "clock" + time_obj.ToString();
                 clock.transform.eulerAngles = new Vector3(-10f, 200f, 10f);
+                BoxCollider boxCollider = clock.AddComponent<BoxCollider>();
+                boxCollider.isTrigger = true;
                 time_obj++;
             }
         }

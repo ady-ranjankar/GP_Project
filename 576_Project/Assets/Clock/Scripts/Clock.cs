@@ -6,7 +6,7 @@ public class Clock : MonoBehaviour {
 //-----------------------------------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------------------------
 //
-//  Simple Clock Script / Andre "AEG" Bürger / VIS-Games 2012
+//  Simple Clock Script / Andre "AEG" Bï¿½rger / VIS-Games 2012
 //
 //-----------------------------------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ public class Clock : MonoBehaviour {
     
     //-- time speed factor
     public float clockSpeed = 1.0f;     // 1.0f = realtime, < 1.0f = slower, > 1.0f = faster
-
+    public CreateEnvironment create;
     //-- internal vars
     int seconds;
     float msecs;
@@ -36,7 +36,17 @@ void Start()
 
     msecs = 0.0f;
     seconds = 0;
+    GameObject create_env = GameObject.Find("Environment");
+    create = create_env.GetComponent<CreateEnvironment>();
 }
+
+private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Time Increased");
+        Object.Destroy(this.gameObject);
+        create.timeRemaining += 10.0f;
+        Debug.Log(create.timeRemaining);
+    }
 //-----------------------------------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------------------------

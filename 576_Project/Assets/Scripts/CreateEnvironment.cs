@@ -25,7 +25,7 @@ public class CreateEnvironment : MonoBehaviour
 
     public GameObject player;
 
-    public float timeRemaining = 100.0f;
+    public float timeRemaining = 3.0f;
 
     //public Type claire_script;
 
@@ -55,7 +55,7 @@ public class CreateEnvironment : MonoBehaviour
     private int function_calls = 0; 
 
     private void Start(){
-        timeRemaining = 100.0f;
+        timeRemaining = 30.0f;
     }
 
     private void Update() 

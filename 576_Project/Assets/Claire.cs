@@ -22,6 +22,7 @@ public class Claire : MonoBehaviour {
     
     public float timer;
     float y_axis;
+    public CreateEnvironment create;
     
 	// Use this for initialization
 	void Start ()
@@ -35,27 +36,15 @@ public class Claire : MonoBehaviour {
         num_lives = 5;
         has_won = false;
         timer = 0;
+        GameObject create_env = GameObject.Find("Environment");
+        create = create_env.GetComponent<CreateEnvironment>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        int x = 0;
-        if (x==0){
-            
-            if (num_lives == 0){
-                animation_controller.SetTrigger("death");
-                x = 1;
-            }
-        }
-
-        if (x == 1 && timer < 4){
-            timer += Time.deltaTime;
-        }
-        else if (x == 1){
-           animation_controller.speed = 0f;
-            
-        }
+        if(create.timeRemaining <= 0.0f)
+            Time.timeScale = 0;
 
         int check = 0;
         ////////////////////////////////////////////////
@@ -73,7 +62,7 @@ public class Claire : MonoBehaviour {
         bool running = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
         bool jump = Input.GetKeyDown(KeyCode.Space);
 
-        if(has_won == true || x == 1){
+        if(create.timeRemaining <= 0.0f){
             
             animation_controller.SetBool("isWalking", false);
             animation_controller.SetBool("isCrouch", false);

@@ -2401,7 +2401,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1341344012}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: GetDifficultyLevel
+        m_MethodName: SetDifficultyLevel
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

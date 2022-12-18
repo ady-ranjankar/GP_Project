@@ -1,13 +1,14 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
-public class Controller2 : MonoBehaviour
+using System;
+
+public class Controller4 : MonoBehaviour
 {
 
-    
+    private float timeRemaining = 3.0f;
     public bool timerIsRunning = false;
     public TMP_Text timer_text ;
     private float time_left;
@@ -15,20 +16,17 @@ public class Controller2 : MonoBehaviour
     public CreateEnvironment create;
 
     public Opponent opponent;
-
     public GenQuestions questiongen;
 
     public GameObject claire;
 
     public Behaviour NextLevel;
     public Behaviour NextLevel_text;
-
     private string diff_level;
     public TMP_Text diff_level_text;
 
     int opp_answer;
     int act_answer;
-
     int answer;
     int g_over = 0;
     Color fin_color;
@@ -36,7 +34,7 @@ public class Controller2 : MonoBehaviour
     void Start()
     {
         time_left = 30.0f;
-        level = 2;
+        level = 3;
         create.begin(level);
         opp_answer = get_opponent_answer();
         act_answer = get_actual_answer();
@@ -95,13 +93,16 @@ public class Controller2 : MonoBehaviour
             yield return new WaitForSeconds(0.01f);
         }
         timer_text.gameObject.SetActive(false);
-        StopCoroutine("Timer");    
+        StopCoroutine("Timer");  
+        diff_level = GameManager.instance.difficulty_level;
+        diff_level_text.text = "Level: " + diff_level;  
     }
 
+
     // Update is called once per frame
-    void Update()
+        void Update()
     {
-        if(claire.transform.position.y < -1.85)
+    if(claire.transform.position.y < -1.85)
             g_over = 1;
 
         if(claire.transform.position.y < -13.85)    

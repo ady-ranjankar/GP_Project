@@ -82,7 +82,7 @@ public class Opponent : MonoBehaviour
         GameObject tile = GameObject.Find(name);
 
         GameObject opp = GameObject.Find("opp");
-
+        Debug.Log("Tile y location: " + tile.transform.position.y);
         Vector3 tile_pos = tile.transform.position;
         
         Vector3 cur_pos = opp.transform.position;

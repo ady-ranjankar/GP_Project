@@ -21,8 +21,14 @@ public class GameManager : MonoBehaviour
     private string[] players;
     private int[] scores;
     //find your dropdown menu transform
-    private string difficulty_level;
+    public static GameManager instance;
+    public string difficulty_level;
     // Start is called before the first frame update
+
+    public void Awake(){
+        instance = this;
+        DontDestroyOnLoad(this.gameObject);
+    }
     void Start()
     {
 
@@ -91,23 +97,28 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private IEnumerator Timer() {
-        while (time_left > 0.0f) { // decrement time left
-            time_left -= 0.1f;
-            if (time_left > 0.0f) {
-                timer_text.text = "Time Left : " + time_left.ToString("F2");    
-            }
-            yield return new WaitForSeconds(0.1f);
-        }
-        is_game_running = false;
-        score_text.gameObject.SetActive(false);
-        timer_text.gameObject.SetActive(false);
-        StopCoroutine("Timer"); 
-        writeScores();
-        // hall_of_fame.Setup();    
+    // private IEnumerator Timer() {
+    //     while (time_left > 0.0f) { // decrement time left
+    //         time_left -= 0.1f;
+    //         if (time_left > 0.0f) {
+    //             timer_text.text = "Time Left : " + time_left.ToString("F2");    
+    //         }
+    //         yield return new WaitForSeconds(0.1f);
+    //     }
+    //     is_game_running = false;
+    //     score_text.gameObject.SetActive(false);
+    //     timer_text.gameObject.SetActive(false);
+    //     StopCoroutine("Timer"); 
+    //     writeScores();
+    //     // hall_of_fame.Setup();    
+    // }
+
+    public string GetDifficultyLevel(){
+        // Debug.Log(difficulty_level);
+        return difficulty_level;
     }
 
-    public void GetDifficultyLevel(int index){
+    public void SetDifficultyLevel(int index){
         if(index == 0){
             difficulty_level = "EASY";
         }
@@ -117,7 +128,8 @@ public class GameManager : MonoBehaviour
         else{
             difficulty_level = "HARD";
         }
-        Debug.Log("Level Selected: " + difficulty_level);
+       Debug.Log("Level Selected: " + difficulty_level);
+
     }
 
     public void SetPlayerNickname(){
@@ -128,7 +140,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("Scene1");
         // score_text.gameObject.SetActive(true);
         // timer_text.gameObject.SetActive(true);
-        StartCoroutine("Timer"); 
+         
 
     }
     // Update is called once per frame

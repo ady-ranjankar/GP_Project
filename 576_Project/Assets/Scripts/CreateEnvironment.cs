@@ -217,7 +217,7 @@ is written inside it */
                 
                 player.SetActive(true);
                 player.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
-                player.transform.position = new Vector3(lr*5 - (float)(size * Math.Floor(width/2)), -1.8f, wr*width - 2.0f);
+                player.transform.position = new Vector3(lr*5 - (float)(size * Math.Floor(width/2)), -1.9f, wr*width - 2.0f);
                 break;
             }
         }
@@ -237,6 +237,10 @@ is written inside it */
                 opp.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
                 opp.transform.position = new Vector3(lr*5 - (float)(size * Math.Floor(width/2)), -1.9f, wr*width - 2.0f);
                 opp.AddComponent<CharacterController>();
+                CharacterController cc = opp.GetComponent<CharacterController>();
+                cc.center = new Vector3(0.0f,1.0f, 0.0f);
+                // opp.AddComponent<BoxCollider>();
+                opp.AddComponent<UnityEngine.AI.NavMeshAgent>();
                 //Rigidbody gameObjectsRigidBody = opp.AddComponent<Rigidbody>(); 
                 //gameObjectsRigidBody.mass = 0.1f;
                 //opp.AddComponent<BoxCollider>();

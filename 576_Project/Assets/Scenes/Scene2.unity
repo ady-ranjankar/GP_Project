@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1825,7 +1825,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.12087018, y: 0.000000008540114, z: -0.0000000010398691, w: 0.99266833}
+  m_LocalRotation: {x: 0.12087019, y: 0.0000000042700568, z: -5.1993454e-10, w: 0.99266833}
   m_LocalPosition: {x: 0, y: 1.2877307, z: -4.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2605,12 +2605,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerIsRunning: 0
+  timer_text: {fileID: 0}
   create: {fileID: 1782397496}
   opponent: {fileID: 543441944}
   questiongen: {fileID: 2016007706}
   claire: {fileID: 1850906989}
   NextLevel: {fileID: 1416216225}
   NextLevel_text: {fileID: 1338401900}
+  diff_level_text: {fileID: 1997847728}
 --- !u!1001 &1414994254
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3029,6 +3031,7 @@ MonoBehaviour:
   myPrefab: {fileID: 100002, guid: 595cf544943e29a4d9a7b813e4218a3c, type: 3}
   opp_prefab: {fileID: 1968476592218994, guid: 313ad0ef31f75b84f9f31c0528802fdd, type: 3}
   player: {fileID: 1850906989}
+  timeRemaining: 3
 --- !u!1 &1819218755
 GameObject:
   m_ObjectHideFlags: 0
@@ -3275,6 +3278,7 @@ MonoBehaviour:
   speed: 600
   turnSpeed: 400
   timer: 0
+  create: {fileID: 0}
 --- !u!136 &1850906991
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3618,7 +3622,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Level: EASY'
+  m_text: 'Level : '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 38140e3a08314441eae03069e5502bd1, type: 2}
   m_sharedMaterial: {fileID: -5775000331287921366, guid: 38140e3a08314441eae03069e5502bd1, type: 2}

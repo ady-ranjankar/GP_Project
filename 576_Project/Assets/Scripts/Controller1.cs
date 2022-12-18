@@ -3,19 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using TMPro;
 public class Controller1 : MonoBehaviour
 {
 
-    
-    public bool timerIsRunning = false;
 
+    public bool timerIsRunning = false;
+    public TMP_Text timer_text ;
+    private float time_left;
     private int level;
     public CreateEnvironment create;
 
     public Opponent opponent;
 
     public GenQuestions questiongen;
+
+    private string diff_level;
+    public TMP_Text diff_level_text;
 
     public GameObject claire;
 
@@ -30,6 +34,7 @@ public class Controller1 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        time_left = 30.0f;
         level = 1;
         create.begin(level);
         opp_answer = get_opponent_answer();
@@ -51,6 +56,9 @@ public class Controller1 : MonoBehaviour
         NextLevel.enabled = false;
         NextLevel_text.enabled = false;
         //claire.SetActive(false);
+        StartCoroutine("Timer");
+        diff_level = GameManager.instance.difficulty_level;
+        diff_level_text.text = "Level: " + diff_level;
     }
 
     int get_opponent_answer(){
@@ -77,6 +85,18 @@ public class Controller1 : MonoBehaviour
         SceneManager.LoadScene("ExitMenu");
     }
 
+    private IEnumerator Timer() {
+        while (time_left > 0.0f) { // decrement time left
+            time_left -= 0.01f;
+            if (create.timeRemaining > 0.0f) {
+                timer_text.text = "Time Left : " + time_left.ToString("F2");    
+            }
+            yield return new WaitForSeconds(0.01f);
+        }
+        timer_text.gameObject.SetActive(false);
+        StopCoroutine("Timer");    
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -92,7 +112,7 @@ public class Controller1 : MonoBehaviour
         {
             if (create.timeRemaining > 0)
             {
-                create.timeRemaining -= Time.deltaTime;
+                create.timeRemaining -= Time.deltaTime;   
             }
             else if(g_over == 0)
             {

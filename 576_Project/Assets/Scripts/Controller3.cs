@@ -59,8 +59,8 @@ public class Controller3 : MonoBehaviour
         NextLevel_text.enabled = false;
         //claire.SetActive(false);
         StartCoroutine("Timer");
-        diff_level = GameManager.instance.difficulty_level;
-        diff_level_text.text = "Level: " + diff_level;
+        //diff_level = GameManager.instance.difficulty_level;
+        //diff_level_text.text = "Level: " + diff_level;
     }
 
     int get_opponent_answer(){

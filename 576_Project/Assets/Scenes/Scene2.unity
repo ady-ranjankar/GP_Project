@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1825,7 +1825,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.12087019, y: 0.0000000042700568, z: -5.1993454e-10, w: 0.99266833}
+  m_LocalRotation: {x: 0.12087018, y: 0.000000008540114, z: -0.0000000010398691, w: 0.99266833}
   m_LocalPosition: {x: 0, y: 1.2877307, z: -4.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2604,9 +2604,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a115febfe9f7bdb4dad3bc68ce14eed4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movement_direction: {x: 0, y: 0, z: 0}
   timerIsRunning: 0
   timer_text: {fileID: 0}
   create: {fileID: 1782397496}
+  clr: {fileID: 1850906990}
   opponent: {fileID: 543441944}
   questiongen: {fileID: 2016007706}
   claire: {fileID: 1850906989}
@@ -3279,6 +3281,7 @@ MonoBehaviour:
   turnSpeed: 400
   timer: 0
   create: {fileID: 0}
+  down_move: 0
 --- !u!136 &1850906991
 CapsuleCollider:
   m_ObjectHideFlags: 0

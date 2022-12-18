@@ -55,7 +55,7 @@ public class CreateEnvironment : MonoBehaviour
     private int function_calls = 0; 
 
     private void Start(){
-        timeRemaining = 30.0f;
+        timeRemaining = 15.0f;
     }
 
     private void Update() 

@@ -23,10 +23,11 @@ public class Claire : MonoBehaviour {
     public float timer;
     float y_axis;
     public CreateEnvironment create;
-    
+    public int down_move;
 	// Use this for initialization
 	void Start ()
     {
+        down_move = 0;
         animation_controller = GetComponent<Animator>();
         character_controller = GetComponent<CharacterController>();
         movement_direction = new Vector3(0.0f, 0.0f, 0.0f);
@@ -43,8 +44,14 @@ public class Claire : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if(create.timeRemaining <= 0.0f)
-            Time.timeScale = 0;
+        if(down_move == 1)
+        {
+            movement_direction = new Vector3(0.0f, -20.0f, 0.0f);
+            Vector3 lower_character = movement_direction * 1.0f * Time.deltaTime;
+            
+            character_controller.Move(lower_character);
+        }
+            
 
         int check = 0;
         ////////////////////////////////////////////////
@@ -69,6 +76,12 @@ public class Claire : MonoBehaviour {
             animation_controller.SetBool("isRunning", false);
             animation_controller.SetBool("isJump", false);
             velocity = 0.0f;
+            if (transform.position.y > 0.00f) // if the character starts "climbing" the terrain, drop her down
+            {
+                Vector3 lower_character = movement_direction * velocity * Time.deltaTime;
+                lower_character.y = -2; // hack to force her down
+                character_controller.Move(lower_character);
+            }
         }
         
         

@@ -7,12 +7,13 @@ using TMPro;
 public class Controller2 : MonoBehaviour
 {
 
-    
+    public Vector3 movement_direction;
     public bool timerIsRunning = false;
     public TMP_Text timer_text ;
     private float time_left;
     private int level;
     public CreateEnvironment create;
+    public Claire clr;
 
     public Opponent opponent;
 
@@ -28,16 +29,17 @@ public class Controller2 : MonoBehaviour
 
     int opp_answer;
     int act_answer;
-
-    int answer;
     int g_over = 0;
+    int answer;
+    int down_move = 0;
     Color fin_color;
     // Start is called before the first frame update
     void Start()
     {
-        time_left = 30.0f;
+        Time.timeScale = 1;
+        
         level = 2;
-        create.begin(level);
+       create.begin(level);
         opp_answer = get_opponent_answer();
         act_answer = get_actual_answer();
         if(act_answer == 1)
@@ -58,8 +60,8 @@ public class Controller2 : MonoBehaviour
         NextLevel_text.enabled = false;
         //claire.SetActive(false);
         StartCoroutine("Timer");
-        diff_level = GameManager.instance.difficulty_level;
-        diff_level_text.text = "Level: " + diff_level;
+        //diff_level = GameManager.instance.difficulty_level;
+        //diff_level_text.text = "Level: " + diff_level;
     }
 
     int get_opponent_answer(){
@@ -87,8 +89,8 @@ public class Controller2 : MonoBehaviour
     }
 
     private IEnumerator Timer() {
-        while (time_left > 0.0f) { // decrement time left
-            time_left -= 0.01f;
+        while (create.timeRemaining > 0.0f) { // decrement time left
+            create.timeRemaining -= 0.01f;
             if (create.timeRemaining > 0.0f) {
                 timer_text.text = "Time Left : " + time_left.ToString("F2");    
             }
@@ -101,7 +103,7 @@ public class Controller2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(claire.transform.position.y < -1.85)
+        if(claire.transform.position.y < -2.00)
             g_over = 1;
 
         if(claire.transform.position.y < -13.85)    
@@ -116,8 +118,8 @@ public class Controller2 : MonoBehaviour
             else if(g_over == 0)
             {
                 timerIsRunning = false;
-                NextLevel.enabled = true;
-                NextLevel_text.enabled = true;
+
+
                 String n;
                 GameObject tile;
                 int i;
@@ -144,34 +146,23 @@ public class Controller2 : MonoBehaviour
                     }
                 }
 
-                /*
-                level ++;
-                //code to choose question and answer
-                answer = 1;
-                opponent.isRoute = false;
-                GameObject opp = GameObject.Find("opp");
-                UnityEngine.Object.Destroy(opp);
-                claire.SetActive(false);
-                create.begin(level);
-                opponent.get_route(1);
-                opponent.isRoute = true;
-
-                Debug.Log("Time has run out!");
-                
-                foreach (Tile x in create.opponent_to_A) 
+            }
+        }
+        else{
+            RaycastHit hit;
+            if(Physics.Raycast(claire.transform.position, claire.transform.TransformDirection (Vector3.down), out hit, Mathf.Infinity))
+            {
+                if (hit.collider.gameObject.name.Contains("TILE"))
                 {
-                    Debug.Log(x.row);
-                    Debug.Log(x.col);
+                    Debug.Log("found tilesssssssssss");
+                    NextLevel.enabled = true;
+                    NextLevel_text.enabled = true;
+                    Time.timeScale = 0;
                 }
-
-
-                if (level == 5)
-                    timerIsRunning = false;
-                
-                //create.destroy();
-                
-                timeRemaining = 30.0f;
-                */
+                else
+                {
+                    clr.down_move = 1;
+                }
             }
         }
     }

@@ -92,7 +92,7 @@ public class Controller1 : MonoBehaviour
         while (create.timeRemaining > 0.0f) { // decrement time left
             create.timeRemaining -= 0.01f;
             if (create.timeRemaining > 0.0f) {
-                timer_text.text = "Time Left : " + time_left.ToString("F2");    
+                timer_text.text = "Time Left : " + create.timeRemaining.ToString("F2");    
             }
             yield return new WaitForSeconds(0.01f);
         }

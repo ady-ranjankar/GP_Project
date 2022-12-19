@@ -23,16 +23,16 @@ public class GenQuestions : MonoBehaviour
         string file;
         if(level == 1)
             file = "Questions1.csv";
-        else if(level == 1)
+        else if(level == 2)
             file = "Questions2.csv";
-        else if(level == 1)
+        else if(level == 3)
             file = "Questions3.csv";
-        else if(level == 1)
+        else if(level == 4)
             file = "Questions4.csv";
         else 
             file = "Questions5.csv";
         
-        StreamReader sr = new StreamReader("Questions.csv");
+        StreamReader sr = new StreamReader(file);
         List<List<string>> questions = new List<List<string>>();
         string text = "";
         for (int i = 1; i <= 4; i++) 

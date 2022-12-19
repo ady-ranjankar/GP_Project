@@ -1,44 +1,45 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
-using System;
-
 public class Controller3 : MonoBehaviour
 {
 
-    private float timeRemaining = 3.0f;
+    public Vector3 movement_direction;
     public bool timerIsRunning = false;
     public TMP_Text timer_text ;
     private float time_left;
     private int level;
     public CreateEnvironment create;
+    public Claire clr;
 
-    public Opponent opponent;
+    public OpponentNav opponent;
+
     public GenQuestions questiongen;
 
-
+    private string diff_level;
+    public TMP_Text diff_level_text;
 
     public GameObject claire;
 
     public Behaviour NextLevel;
     public Behaviour NextLevel_text;
 
-    private string diff_level;
-    public TMP_Text diff_level_text;
-
     int opp_answer;
     int act_answer;
-    int answer;
     int g_over = 0;
+    int answer;
+    int down_move = 0;
     Color fin_color;
     // Start is called before the first frame update
     void Start()
     {
-        time_left = 30.0f;
+        Time.timeScale = 1;
+        
         level = 3;
-        create.begin(level);
+        create.begin(1);
         opp_answer = get_opponent_answer();
         act_answer = get_actual_answer();
         if(act_answer == 1)
@@ -88,10 +89,10 @@ public class Controller3 : MonoBehaviour
     }
 
     private IEnumerator Timer() {
-        while (time_left > 0.0f) { // decrement time left
-            time_left -= 0.01f;
+        while (create.timeRemaining > 0.0f) { // decrement time left
+            create.timeRemaining -= 0.01f;
             if (create.timeRemaining > 0.0f) {
-                timer_text.text = "Time Left : " + time_left.ToString("F2");    
+                timer_text.text = "Time Left : " + create.timeRemaining.ToString("F2");    
             }
             yield return new WaitForSeconds(0.01f);
         }
@@ -99,27 +100,32 @@ public class Controller3 : MonoBehaviour
         StopCoroutine("Timer");    
     }
 
-
     // Update is called once per frame
-        void Update()
+    void Update()
     {
-    if(claire.transform.position.y < -1.85)
+        //Debug.Log(timeRemaining);
+        if(claire.transform.position.y < -2.00)
             g_over = 1;
 
-        if(claire.transform.position.y < -13.85)    
+        if(claire.transform.position.y < -13.85)
             SceneManager.LoadScene("ExitMenu");
+
+        
 
         if (timerIsRunning)
         {
             if (create.timeRemaining > 0)
             {
-                create.timeRemaining -= Time.deltaTime;
+                create.timeRemaining -= Time.deltaTime;   
             }
-            else if(g_over == 0)
+            else if(g_over ==0)
             {
+                Debug.Log("00000000000");
                 timerIsRunning = false;
-                NextLevel.enabled = true;
-                NextLevel_text.enabled = true;
+                
+                
+
+                
                 String n;
                 GameObject tile;
                 int i;
@@ -145,35 +151,27 @@ public class Controller3 : MonoBehaviour
                         
                     }
                 }
-
-                /*
-                level ++;
-                //code to choose question and answer
-                answer = 1;
-                opponent.isRoute = false;
-                GameObject opp = GameObject.Find("opp");
-                UnityEngine.Object.Destroy(opp);
-                claire.SetActive(false);
-                create.begin(level);
-                opponent.get_route(1);
-                opponent.isRoute = true;
-
-                Debug.Log("Time has run out!");
                 
-                foreach (Tile x in create.opponent_to_A) 
+
+                
+            }
+        }
+        else{
+            RaycastHit hit;
+            if(Physics.Raycast(claire.transform.position, claire.transform.TransformDirection (Vector3.down), out hit, Mathf.Infinity))
+            {
+                if (hit.collider.gameObject.name.Contains("TILE"))
                 {
-                    Debug.Log(x.row);
-                    Debug.Log(x.col);
+                    Debug.Log("found tilesssssssssss");
+                    NextLevel.enabled = true;
+                    NextLevel_text.enabled = true;
+                    Time.timeScale = 0;
                 }
-
-
-                if (level == 5)
-                    timerIsRunning = false;
-                
-                //create.destroy();
-                
-                timeRemaining = 30.0f;
-                */
+                else
+                {
+                    //clr.down_move = 1;
+                    claire.GetComponent<CapsuleCollider>().enabled = false;
+                }
             }
         }
     }

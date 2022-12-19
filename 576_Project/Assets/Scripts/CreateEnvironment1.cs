@@ -4,17 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-enum TileType
-{
-    A = 0,
-    B = 1,
-    C = 2,
-    D = 3,
-    
-}
 
 
-public class CreateEnvironment : MonoBehaviour
+public class CreateEnvironment1 : MonoBehaviour
 {
     public float width;
     public int size;

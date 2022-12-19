@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
-public class Controller4 : MonoBehaviour
+public class Controller5 : MonoBehaviour
 {
 
     public Vector3 movement_direction;
@@ -15,7 +15,7 @@ public class Controller4 : MonoBehaviour
     public CreateEnvironment create;
     public Claire clr;
 
-    public OpponentNav opponent;
+    public Opponent opponent;
 
     public GenQuestions questiongen;
 
@@ -38,8 +38,8 @@ public class Controller4 : MonoBehaviour
     {
         Time.timeScale = 1;
         
-        level = 4;
-        create.begin(1);
+        level = 5;
+        create.begin(level);
         opp_answer = get_opponent_answer();
         act_answer = get_actual_answer();
         if(act_answer == 1)
@@ -77,7 +77,7 @@ public class Controller4 : MonoBehaviour
     public void Scene_Change()
     {
         Debug.Log("Scene change");
-        SceneManager.LoadScene("Scene5");
+        SceneManager.LoadScene("ExitMenu");
     }
 
     public void onPauseButton(){
@@ -163,14 +163,12 @@ public class Controller4 : MonoBehaviour
                 if (hit.collider.gameObject.name.Contains("TILE"))
                 {
                     Debug.Log("found tilesssssssssss");
-                    NextLevel.enabled = true;
-                    NextLevel_text.enabled = true;
+                    SceneManager.LoadScene("ExitMenu");
                     Time.timeScale = 0;
                 }
                 else
                 {
-                    //clr.down_move = 1;
-                    claire.GetComponent<CapsuleCollider>().enabled = false;
+                    clr.down_move = 1;
                 }
             }
         }

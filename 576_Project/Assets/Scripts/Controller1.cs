@@ -32,7 +32,11 @@ public class Controller1 : MonoBehaviour
     private GameObject resume;
     private GameObject pause;
 
-    // private bool player_won;
+    private bool player_won;
+
+
+    private AudioClip failed_audio;
+    private AudioSource audio_source;
 
     int opp_answer;
     int act_answer;
@@ -41,15 +45,15 @@ public class Controller1 : MonoBehaviour
     int down_move = 0;
     Color fin_color;
 
-    // [SerializeField]
-    // private FloatSO scoreSO;
+    [SerializeField]
+    private FloatSO scoreSO;
 
    
-//    private void UpdateScore()
-//    {
-//        scoreSO.Value += level*10;
-//        Debug.Log(scoreSO.Value);
-//    }
+   private void UpdateScore()
+   {
+       scoreSO.Value += level*10;
+       Debug.Log(scoreSO.Value);
+   }
     // Start is called before the first frame update
     void Start()
     {
@@ -80,12 +84,16 @@ public class Controller1 : MonoBehaviour
         StartCoroutine("Timer");
         diff_level = GameManager.instance.difficulty_level;
         diff_level_text.text = "Level: " + diff_level;
-        // player_won = false;
+        player_won = false;
 
 
         pause = GameObject.Find("PauseButton");
         resume = GameObject.Find("ResumeButton");
         resume.SetActive(false);
+
+        audio_source = gameObject.GetComponent<AudioSource>();
+        failed_audio = Resources.Load<AudioClip>("Sounds/failed_music");
+        Debug.Log(failed_audio != null);
     }
 
     int get_opponent_answer(){
@@ -141,11 +149,11 @@ public class Controller1 : MonoBehaviour
     {
 
 
-        // if (player_won)
-        // {
-        //     UpdateScore();
-        //     // player_won = false;
-        // }
+        if (player_won)
+        {
+            UpdateScore();
+            // player_won = false;
+        }
         // //Debug.Log(timeRemaining);
 
         if(claire.transform.position.y < -2.00)
@@ -162,9 +170,9 @@ public class Controller1 : MonoBehaviour
             {
                 create.timeRemaining -= Time.deltaTime;   
             }
-            else if(g_over ==0) // Claire lost, game not over
+            else if(g_over ==0) //
             {
-                Debug.Log("Claire Lost!");
+                // Debug.Log("Claire Lost!");
                 timerIsRunning = false;
 
                 String n;
@@ -205,9 +213,9 @@ public class Controller1 : MonoBehaviour
                 {
                     Debug.Log("found tilesssssssssss");
                     Debug.Log("Claire Passed"); // Claire passed and time over/ game over
-                    // if (!player_won){
-                    //     player_won = true;
-                    // }
+                    if (!player_won){
+                        player_won = true;
+                    }
                     
                     NextLevel.enabled = true;
                     NextLevel_text.enabled = true;
@@ -216,6 +224,8 @@ public class Controller1 : MonoBehaviour
                 else
                 {
                     clr.down_move = 1;
+                    audio_source.PlayOneShot(failed_audio);
+
                 }
             }
         }

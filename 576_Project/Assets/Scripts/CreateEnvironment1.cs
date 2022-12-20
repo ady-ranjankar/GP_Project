@@ -231,7 +231,7 @@ is written inside it */
                 opp.AddComponent<CharacterController>();
                 CharacterController cc = opp.GetComponent<CharacterController>();
                 cc.center = new Vector3(0.0f,1.0f, 0.0f);
-                // opp.AddComponent<BoxCollider>();
+                opp.AddComponent<BoxCollider>();
                 opp.AddComponent<UnityEngine.AI.NavMeshAgent>();
                 //Rigidbody gameObjectsRigidBody = opp.AddComponent<Rigidbody>(); 
                 //gameObjectsRigidBody.mass = 0.1f;

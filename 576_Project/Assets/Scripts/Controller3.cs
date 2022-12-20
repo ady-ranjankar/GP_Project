@@ -27,6 +27,9 @@ public class Controller3 : MonoBehaviour
     public Behaviour NextLevel;
     public Behaviour NextLevel_text;
 
+    private GameObject resume;
+    private GameObject pause;
+
     int opp_answer;
     int act_answer;
     int g_over = 0;
@@ -41,6 +44,7 @@ public class Controller3 : MonoBehaviour
         level = 3;
         create.begin(1);
         opp_answer = get_opponent_answer();
+        Debug.Log("Opponent's Answer " + opp_answer);
         act_answer = get_actual_answer();
         if(act_answer == 1)
             fin_color = Color.red;
@@ -60,8 +64,12 @@ public class Controller3 : MonoBehaviour
         NextLevel_text.enabled = false;
         //claire.SetActive(false);
         StartCoroutine("Timer");
-        //diff_level = GameManager.instance.difficulty_level;
-        //diff_level_text.text = "Level: " + diff_level;
+        diff_level = GameManager.instance.difficulty_level;
+        diff_level_text.text = "Level: " + diff_level;
+
+        pause = GameObject.Find("PauseButton");
+        resume = GameObject.Find("ResumeButton");
+        resume.SetActive(false);
     }
 
     int get_opponent_answer(){
@@ -80,8 +88,19 @@ public class Controller3 : MonoBehaviour
         SceneManager.LoadScene("Scene4");
     }
 
+    public void onResumeButton(){
+        StartCoroutine("Timer");  
+        Time.timeScale = 1;
+        resume.SetActive(false);
+        pause.SetActive(true);
+    }
     public void onPauseButton(){
-        SceneManager.LoadScene("MainMenu2");
+        StopCoroutine("Timer");     
+        // SceneManager.LoadScene("MainMenu2");
+        Time.timeScale = 0;
+        pause.SetActive(false);
+        resume.SetActive(true);
+
     }
 
     public void onExitButton(){

@@ -102,8 +102,6 @@ public class Opponent : MonoBehaviour
     void Update()
     {
         String name;
-        
-
         if(isRoute && i < route.Count)
         {
             GameObject opp = GameObject.Find("opp");
@@ -117,6 +115,7 @@ public class Opponent : MonoBehaviour
                     return;
             }
         
+            // SET DESTINATION OF OPPONENT
             Vector3 direction = get_direction();
             Tile x = route[i];
             name = "TILE" + (x.row*create.size + x.col).ToString();
@@ -143,9 +142,7 @@ public class Opponent : MonoBehaviour
                    StartCoroutine(StartAnimation());
                 }
 
-            // if(i < route.Count){
-            //     StartCoroutine(StartAnimation());
-            // }
+           
             ///////////////////
             if(Vector3.Distance(opp.transform.position,tile_pos) < 0.1f)
             {

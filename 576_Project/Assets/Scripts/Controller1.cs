@@ -27,18 +27,36 @@ public class Controller1 : MonoBehaviour
     public Behaviour NextLevel;
     public Behaviour NextLevel_text;
 
+    private float max_level_score;
+    private float current_level_score;
+    private GameObject resume;
+    private GameObject pause;
+
+    // private bool player_won;
+
     int opp_answer;
     int act_answer;
     int g_over = 0;
     int answer;
     int down_move = 0;
     Color fin_color;
+
+    // [SerializeField]
+    // private FloatSO scoreSO;
+
+   
+//    private void UpdateScore()
+//    {
+//        scoreSO.Value += level*10;
+//        Debug.Log(scoreSO.Value);
+//    }
     // Start is called before the first frame update
     void Start()
     {
         Time.timeScale = 1;
         
         level = 1;
+        max_level_score = level*10.0f;
         create.begin(level);
         opp_answer = get_opponent_answer();
         act_answer = get_actual_answer();
@@ -60,8 +78,14 @@ public class Controller1 : MonoBehaviour
         NextLevel_text.enabled = false;
         //claire.SetActive(false);
         StartCoroutine("Timer");
-        //diff_level = GameManager.instance.difficulty_level;
-        //diff_level_text.text = "Level: " + diff_level;
+        diff_level = GameManager.instance.difficulty_level;
+        diff_level_text.text = "Level: " + diff_level;
+        // player_won = false;
+
+
+        pause = GameObject.Find("PauseButton");
+        resume = GameObject.Find("ResumeButton");
+        resume.SetActive(false);
     }
 
     int get_opponent_answer(){
@@ -80,9 +104,21 @@ public class Controller1 : MonoBehaviour
         SceneManager.LoadScene("Scene2");
     }
 
-    public void onPauseButton(){
-        SceneManager.LoadScene("MainMenu2");
+    public void onResumeButton(){
+        StartCoroutine("Timer");  
+        Time.timeScale = 1;
+        resume.SetActive(false);
+        pause.SetActive(true);
     }
+    public void onPauseButton(){
+        StopCoroutine("Timer");     
+        // SceneManager.LoadScene("MainMenu2");
+        Time.timeScale = 0;
+        pause.SetActive(false);
+        resume.SetActive(true);
+
+    }
+
 
     public void onExitButton(){
         SceneManager.LoadScene("ExitMenu");
@@ -103,9 +139,17 @@ public class Controller1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(timeRemaining);
+
+
+        // if (player_won)
+        // {
+        //     UpdateScore();
+        //     // player_won = false;
+        // }
+        // //Debug.Log(timeRemaining);
+
         if(claire.transform.position.y < -2.00)
-            g_over = 1;
+            g_over = 1; // Claire Lost, Game is Over
 
         if(claire.transform.position.y < -13.85)
             SceneManager.LoadScene("ExitMenu");
@@ -118,14 +162,11 @@ public class Controller1 : MonoBehaviour
             {
                 create.timeRemaining -= Time.deltaTime;   
             }
-            else if(g_over ==0)
+            else if(g_over ==0) // Claire lost, game not over
             {
-                Debug.Log("00000000000");
+                Debug.Log("Claire Lost!");
                 timerIsRunning = false;
-                
-                
 
-                
                 String n;
                 GameObject tile;
                 int i;
@@ -163,6 +204,11 @@ public class Controller1 : MonoBehaviour
                 if (hit.collider.gameObject.name.Contains("TILE"))
                 {
                     Debug.Log("found tilesssssssssss");
+                    Debug.Log("Claire Passed"); // Claire passed and time over/ game over
+                    // if (!player_won){
+                    //     player_won = true;
+                    // }
+                    
                     NextLevel.enabled = true;
                     NextLevel_text.enabled = true;
                     Time.timeScale = 0;
@@ -173,6 +219,8 @@ public class Controller1 : MonoBehaviour
                 }
             }
         }
+        
+        
     }
 
 }

@@ -26,6 +26,8 @@ public class Controller5 : MonoBehaviour
 
     public Behaviour NextLevel;
     public Behaviour NextLevel_text;
+    private GameObject resume;
+    private GameObject pause;
 
     int opp_answer;
     int act_answer;
@@ -60,8 +62,12 @@ public class Controller5 : MonoBehaviour
         NextLevel_text.enabled = false;
         //claire.SetActive(false);
         StartCoroutine("Timer");
-        //diff_level = GameManager.instance.difficulty_level;
-        //diff_level_text.text = "Level: " + diff_level;
+        diff_level = GameManager.instance.difficulty_level;
+        diff_level_text.text = "Level: " + diff_level;
+        pause = GameObject.Find("PauseButton");
+        resume = GameObject.Find("ResumeButton");
+        resume.SetActive(false);
+        
     }
 
     int get_opponent_answer(){
@@ -80,9 +86,21 @@ public class Controller5 : MonoBehaviour
         SceneManager.LoadScene("ExitMenu");
     }
 
-    public void onPauseButton(){
-        SceneManager.LoadScene("MainMenu2");
+    public void onResumeButton(){
+        StartCoroutine("Timer");  
+        Time.timeScale = 1;
+        resume.SetActive(false);
+        pause.SetActive(true);
     }
+    public void onPauseButton(){
+        StopCoroutine("Timer");     
+        // SceneManager.LoadScene("MainMenu2");
+        Time.timeScale = 0;
+        pause.SetActive(false);
+        resume.SetActive(true);
+
+    }
+
 
     public void onExitButton(){
         SceneManager.LoadScene("ExitMenu");

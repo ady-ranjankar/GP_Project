@@ -113,6 +113,7 @@ public class OpponentNav : MonoBehaviour
         if (isRoute && opp.transform.position != destination)
         {
             navM.destination = destination;
+            navM.SetDestination(destination);
         }
         else
         {

@@ -20,9 +20,10 @@ public class GameManager : MonoBehaviour
     private string score_file;
     private string[] players;
     private int[] scores;
-    //find your dropdown menu transform
+    
     public static GameManager instance;
     public string difficulty_level;
+    public float player_score; 
     // Start is called before the first frame update
 
     public void Awake(){
@@ -31,7 +32,7 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-
+        player_score = 0.0f;
         // timer_text.gameObject.SetActive(false);
         GameObject.Find("GameStart").SetActive(true);
         // GameObject.Find("GameEnd").SetActive(false);

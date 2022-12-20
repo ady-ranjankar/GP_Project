@@ -13,6 +13,11 @@ public class ViewScores : MonoBehaviour
     private GameObject scoresButton;
     private GameObject helpButton;
     private GameObject exitButton;
+
+
+    [SerializeField]
+    private FloatSO scoreSO;
+
     // set up the the hall of fame screen
     void Start(){
         gameObject.SetActive(false);
@@ -29,6 +34,7 @@ public class ViewScores : MonoBehaviour
         scoresButton.SetActive(false);
         helpButton.SetActive(false);
         exitButton.SetActive(false);
+        Debug.Log("Level 1 scores" + scoreSO.Value);
 
         StreamReader sr = new StreamReader("scores.txt");
         string text = "Name : Score\n\n ";

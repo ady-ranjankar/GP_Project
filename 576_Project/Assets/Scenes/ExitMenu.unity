@@ -1041,6 +1041,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   score_board: {fileID: 1838819842}
+  scoreSO: {fileID: 11400000, guid: a977320d147e3492aaa8711fef8fcdf7, type: 2}
 --- !u!1 &1243789140
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,7 +7,7 @@ public class LoadExitHelpGame : MonoBehaviour
 {
     // Start is called before the first frame update
     public void onHelpButton() {
-        Debug.Log("Help!!!");
+        SceneManager.LoadScene("HelpMenu");
     }
     public void onExitButton(){
         SceneManager.LoadScene("ExitMenu");

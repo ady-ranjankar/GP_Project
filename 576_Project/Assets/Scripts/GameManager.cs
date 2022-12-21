@@ -34,6 +34,11 @@ public class GameManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(this.gameObject);
     }
+
+
+    public void onHelpButton(){
+        SceneManager.LoadScene("HelpMenu");
+    }
     void Start()
     {
         player_score = 0.0f;

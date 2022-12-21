@@ -20,9 +20,13 @@ public class GameManager : MonoBehaviour
     private string score_file;
     private string[] players;
     private int[] scores;
+
+
+    [SerializeField]
+    private StringSO nameSO;
     
     public static GameManager instance;
-    public string difficulty_level;
+    // public string difficulty_level;
     public float player_score; 
     // Start is called before the first frame update
 
@@ -114,29 +118,30 @@ public class GameManager : MonoBehaviour
     //     // hall_of_fame.Setup();    
     // }
 
-    public string GetDifficultyLevel(){
-        // Debug.Log(difficulty_level);
-        return difficulty_level;
-    }
+    // public string GetDifficultyLevel(){
+    //     // Debug.Log(difficulty_level);
+    //     return difficulty_level;
+    // }
 
-    public void SetDifficultyLevel(int index){
-        if(index == 0){
-            difficulty_level = "EASY";
-        }
-        else if(index == 1){
-            difficulty_level = "MEDIUM";
-        }
-        else{
-            difficulty_level = "HARD";
-        }
-       Debug.Log("Level Selected: " + difficulty_level);
+    // public void SetDifficultyLevel(int index){
+    //     if(index == 0){
+    //         difficulty_level = "EASY";
+    //     }
+    //     else if(index == 1){
+    //         difficulty_level = "MEDIUM";
+    //     }
+    //     else{
+    //         difficulty_level = "HARD";
+    //     }
+    //    Debug.Log("Level Selected: " + difficulty_level);
 
-    }
+    // }
 
     public void SetPlayerNickname(){
        
         player_nickname = nickname.text;
         Debug.Log(player_nickname);
+        nameSO.Value = player_nickname;
         GameObject.Find("GameStart").SetActive(false);
         SceneManager.LoadScene("Scene1");
         // score_text.gameObject.SetActive(true);

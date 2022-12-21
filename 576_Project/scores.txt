@@ -1,6 +1,5 @@
+SAME, 60
 Gary, 17
 Sam, 15
-Gargi, 13
 Sara, 13
-Gargi, 12
-
+Gargi, 13

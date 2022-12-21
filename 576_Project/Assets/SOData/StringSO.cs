@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class FloatSO : ScriptableObject
+public class StringSO : ScriptableObject
 {
-    private float _value;
+    [SerializeField ]
+    private string _value;
     
-    public float Value
+    public string Value
     {
         get {return _value; }
         set {_value = value; }

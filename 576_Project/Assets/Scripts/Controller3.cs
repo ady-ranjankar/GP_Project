@@ -19,8 +19,8 @@ public class Controller3 : MonoBehaviour
 
     public GenQuestions questiongen;
 
-    private string diff_level;
-    public TMP_Text diff_level_text;
+    // private string diff_level;
+    // public TMP_Text diff_level_text;
 
     public GameObject claire;
 
@@ -29,6 +29,13 @@ public class Controller3 : MonoBehaviour
 
     private GameObject resume;
     private GameObject pause;
+
+    [SerializeField]
+    private FloatSO scoreSO;
+    private bool player_won;
+    public TMP_Text msg;
+    private bool update_score_called ;
+
 
     int opp_answer;
     int act_answer;
@@ -64,13 +71,17 @@ public class Controller3 : MonoBehaviour
         NextLevel_text.enabled = false;
         //claire.SetActive(false);
         StartCoroutine("Timer");
-        diff_level = GameManager.instance.difficulty_level;
-        diff_level_text.text = "Level: " + diff_level;
+        // diff_level = GameManager.instance.difficulty_level;
+        // diff_level_text.text = "Level: " + diff_level;
 
         pause = GameObject.Find("PauseButton");
         resume = GameObject.Find("ResumeButton");
         resume.SetActive(false);
+
+         player_won = false;
+         msg.enabled = false;
     }
+
 
     int get_opponent_answer(){
         //Probability to get answer
@@ -118,10 +129,24 @@ public class Controller3 : MonoBehaviour
         timer_text.gameObject.SetActive(false);
         StopCoroutine("Timer");    
     }
+    private void UpdateScore()
+    {
+        scoreSO.Value += level*10;
+        Debug.Log("Update Score " + scoreSO.Value);
+    }
 
     // Update is called once per frame
     void Update()
     {
+
+        if (player_won && !update_score_called )
+        {
+            UpdateScore();
+            // player_won = false;
+            update_score_called = true;
+        }
+
+
         //Debug.Log(timeRemaining);
         if(claire.transform.position.y < -2.00)
             g_over = 1;
@@ -185,11 +210,18 @@ public class Controller3 : MonoBehaviour
                     NextLevel.enabled = true;
                     NextLevel_text.enabled = true;
                     Time.timeScale = 0;
+                    if (!player_won && !update_score_called){
+                        player_won = true;
+                    }
+                    msg.enabled = true;
+                    msg.text =  "Congratulations! You Passed this level";    
                 }
                 else
                 {
                     //clr.down_move = 1;
                     claire.GetComponent<CapsuleCollider>().enabled = false;
+                    msg.enabled = true;
+                    msg.text =  "Ohh no! Level Failed!";  
                 }
             }
         }

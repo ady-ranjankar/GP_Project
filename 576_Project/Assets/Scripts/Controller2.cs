@@ -15,6 +15,8 @@ public class Controller2 : MonoBehaviour
     public CreateEnvironment create;
     public Claire clr;
 
+    
+
     public Opponent opponent;
 
     public GenQuestions questiongen;
@@ -24,10 +26,17 @@ public class Controller2 : MonoBehaviour
     public Behaviour NextLevel;
     public Behaviour NextLevel_text;
 
-    private string diff_level;
-    public TMP_Text diff_level_text;
+    // private string diff_level;
+    // public TMP_Text diff_level_text;
     private GameObject resume;
     private GameObject pause;
+
+
+    public TMP_Text msg;
+    private bool update_score_called ;
+    private bool player_won;
+    [SerializeField]
+    private FloatSO scoreSO;
 
     int opp_answer;
     int act_answer;
@@ -36,6 +45,14 @@ public class Controller2 : MonoBehaviour
     int down_move = 0;
     Color fin_color;
     // Start is called before the first frame update
+
+    private void UpdateScore()
+   {
+       scoreSO.Value += level*10;
+       Debug.Log("Update Score " + scoreSO.Value);
+   }
+
+
     void Start()
     {
         Time.timeScale = 1;
@@ -62,12 +79,16 @@ public class Controller2 : MonoBehaviour
         NextLevel_text.enabled = false;
         //claire.SetActive(false);
         StartCoroutine("Timer");
-        diff_level = GameManager.instance.difficulty_level;
-        diff_level_text.text = "Level: " + diff_level;
+        // diff_level = GameManager.instance.difficulty_level;
+        // diff_level_text.text = "Level: " + diff_level;
 
         pause = GameObject.Find("PauseButton");
         resume = GameObject.Find("ResumeButton");
         resume.SetActive(false);
+         msg.enabled = false;
+
+
+        player_won = false;
     }
 
     int get_opponent_answer(){
@@ -120,6 +141,15 @@ public class Controller2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (player_won && !update_score_called )
+        {
+            UpdateScore();
+            // player_won = false;
+            update_score_called = true;
+        }
+
+
         if(claire.transform.position.y < -2.00)
             g_over = 1;
 
@@ -175,10 +205,17 @@ public class Controller2 : MonoBehaviour
                     NextLevel.enabled = true;
                     NextLevel_text.enabled = true;
                     Time.timeScale = 0;
+                    if (!player_won && !update_score_called){
+                        player_won = true;
+                    }
+                    msg.enabled = true;
+                    msg.text =  "Congratulations! You Passed this level";    
                 }
                 else
                 {
                     clr.down_move = 1;
+                    msg.enabled = true;
+                    msg.text =  "Ohh no! Level Failed!";  
                 }
             }
         }

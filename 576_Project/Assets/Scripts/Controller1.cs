@@ -15,12 +15,15 @@ public class Controller1 : MonoBehaviour
     public CreateEnvironment create;
     public Claire clr;
 
+    public TMP_Text msg;
+    private bool update_score_called ;
+
     public Opponent opponent;
 
     public GenQuestions questiongen;
 
-    private string diff_level;
-    public TMP_Text diff_level_text;
+    // private string diff_level;
+    // public TMP_Text diff_level_text;
 
     public GameObject claire;
 
@@ -52,7 +55,7 @@ public class Controller1 : MonoBehaviour
    private void UpdateScore()
    {
        scoreSO.Value += level*10;
-       Debug.Log(scoreSO.Value);
+       Debug.Log("Update Score " + scoreSO.Value);
    }
     // Start is called before the first frame update
     void Start()
@@ -82,9 +85,10 @@ public class Controller1 : MonoBehaviour
         NextLevel_text.enabled = false;
         //claire.SetActive(false);
         StartCoroutine("Timer");
-        diff_level = GameManager.instance.difficulty_level;
-        diff_level_text.text = "Level: " + diff_level;
+        // diff_level = GameManager.instance.difficulty_level;
+        // diff_level_text.text = "Level: " + diff_level;
         player_won = false;
+
 
 
         pause = GameObject.Find("PauseButton");
@@ -94,6 +98,8 @@ public class Controller1 : MonoBehaviour
         audio_source = gameObject.GetComponent<AudioSource>();
         failed_audio = Resources.Load<AudioClip>("Sounds/failed_music");
         Debug.Log(failed_audio != null);
+
+        msg.enabled = false;
     }
 
     int get_opponent_answer(){
@@ -142,6 +148,7 @@ public class Controller1 : MonoBehaviour
         }
         timer_text.gameObject.SetActive(false);
         StopCoroutine("Timer");    
+        update_score_called = false;
     }
 
     // Update is called once per frame
@@ -149,10 +156,11 @@ public class Controller1 : MonoBehaviour
     {
 
 
-        if (player_won)
+        if (player_won && !update_score_called )
         {
             UpdateScore();
             // player_won = false;
+            update_score_called = true;
         }
         // //Debug.Log(timeRemaining);
 
@@ -213,10 +221,11 @@ public class Controller1 : MonoBehaviour
                 {
                     Debug.Log("found tilesssssssssss");
                     Debug.Log("Claire Passed"); // Claire passed and time over/ game over
-                    if (!player_won){
+                    if (!player_won && !update_score_called){
                         player_won = true;
                     }
-                    
+                    msg.enabled = true;
+                    msg.text =  "Congratulations! You Passed this level";    
                     NextLevel.enabled = true;
                     NextLevel_text.enabled = true;
                     Time.timeScale = 0;
@@ -224,6 +233,8 @@ public class Controller1 : MonoBehaviour
                 else
                 {
                     clr.down_move = 1;
+                    msg.enabled = true;
+                    msg.text =  "Ohh no! Level Failed!";  
                     audio_source.PlayOneShot(failed_audio);
 
                 }

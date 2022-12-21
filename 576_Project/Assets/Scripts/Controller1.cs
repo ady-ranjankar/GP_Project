@@ -95,9 +95,9 @@ public class Controller1 : MonoBehaviour
         resume = GameObject.Find("ResumeButton");
         resume.SetActive(false);
 
-        audio_source = gameObject.GetComponent<AudioSource>();
-        failed_audio = Resources.Load<AudioClip>("Sounds/failed_music");
-        Debug.Log(failed_audio != null);
+        // audio_source = gameObject.GetComponent<AudioSource>();
+        // failed_audio = Resources.Load<AudioClip>("Sounds/failed_music");
+        // Debug.Log(failed_audio != null);
 
         msg.enabled = false;
     }
